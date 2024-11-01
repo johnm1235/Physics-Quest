@@ -16,12 +16,12 @@ namespace StatePattern
         private StateMachine playerStateMachine;
 
         // mesh to changecolor
-        [SerializeField]  private SkinnedMeshRenderer meshRenderer;
+        [SerializeField]  private MeshRenderer meshRenderer;
 
         private void Start()
         {
             player = GetComponent<PlayerController>();
-            meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            meshRenderer = GetComponentInChildren<MeshRenderer>();
 
             // cache to save typing
             playerStateMachine = player.PlayerStateMachine;
