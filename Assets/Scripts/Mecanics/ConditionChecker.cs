@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ConditionChecker : MonoBehaviour
@@ -30,13 +31,22 @@ public class ConditionChecker : MonoBehaviour
         {
             OpenDoor();
         }
+        else
+        {
+            CloseDoor();
+        }
     }
 
     private void OpenDoor()
     {
         // Aquí podrías activar una animación o cambiar el estado de la puerta
         // door.GetComponent<Animator>().SetTrigger("Open");
+        door.SetActive(false);
         Debug.Log("¡Puerta abierta! Se cumplieron ambas condiciones.");
+    }
+    private void CloseDoor()
+    {
+        door.SetActive(true);
     }
 
     public void UpdateLeftVelocityStatus(bool status)

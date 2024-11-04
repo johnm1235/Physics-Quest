@@ -10,6 +10,8 @@ public class LeftCalculator : MonoBehaviour
     public TextMeshProUGUI rapidityText;      // Texto para mostrar la rapidez
     public TextMeshProUGUI distanceText;      // Texto para mostrar la distancia recorrida
     public TextMeshProUGUI displacementText;  // Texto para mostrar el desplazamiento neto
+    public TextMeshProUGUI time;              // Texto para mostrar el tiempo transcurrido
+    public TextMeshProUGUI time2;              // Texto para mostrar el tiempo transcurrido
 
     [Header("Arrows")]
     public Arrow startArrow;                  // Referencia a la flecha de inicio
@@ -78,10 +80,12 @@ public class LeftCalculator : MonoBehaviour
             float speed = netDisplacement / timeElapsed; // Calcular velocidad
             float rapidity = totalDistance / timeElapsed; // Rapidez es la distancia total sobre el tiempo
 
-            speedText.text = "Velocidad: " + speed.ToString("F2");
-            rapidityText.text = "Rapidez: " + rapidity.ToString("F2");
-            distanceText.text = "Distancia: " + totalDistance.ToString("F2");
-            displacementText.text = "Desplazamiento: " + netDisplacement.ToString("F2");
+            speedText.text = speed.ToString("F2");
+            rapidityText.text =  rapidity.ToString("F2");
+            distanceText.text = totalDistance.ToString("F2");
+            displacementText.text = netDisplacement.ToString("F2");
+            time.text =  timeElapsed.ToString("F2");
+            time2.text = timeElapsed.ToString("F2");
 
             conditionChecker.UpdateLeftVelocityStatus(speed >= requiredVelocity);
             conditionChecker.UpdateLeftSpeedStatus(rapidity >= requiredSpeed);
@@ -93,10 +97,13 @@ public class LeftCalculator : MonoBehaviour
         timeElapsed = 0f;
         totalDistance = 0f;
         netDisplacement = 0f;
-        speedText.text = "Velocidad: 0.00";
-        rapidityText.text = "Rapidez: 0.00";
-        distanceText.text = "Distancia: 0.00";
-        displacementText.text = "Desplazamiento: 0.00";
+        speedText.text = "V";
+        rapidityText.text = "S";
+        distanceText.text = "d";
+        displacementText.text = "Ax";
+        time.text = "t";
+        time2.text = "t";
+
     }
     IEnumerator ResetColor()
     {
