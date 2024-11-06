@@ -10,6 +10,9 @@ TagManager:
   - RightPath
   - LeftPath
   - Reset
+  - startArrow
+  - endArrow
+  - midArrow
   layers:
   - Default
   - TransparentFX

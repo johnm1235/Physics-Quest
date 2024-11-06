@@ -39,11 +39,10 @@ public class ConditionChecker : MonoBehaviour
 
     private void OpenDoor()
     {
-        // Aquí podrías activar una animación o cambiar el estado de la puerta
-        // door.GetComponent<Animator>().SetTrigger("Open");
         door.SetActive(false);
         Debug.Log("¡Puerta abierta! Se cumplieron ambas condiciones.");
     }
+
     private void CloseDoor()
     {
         door.SetActive(true);
@@ -51,29 +50,28 @@ public class ConditionChecker : MonoBehaviour
 
     public void UpdateLeftVelocityStatus(bool status)
     {
-        leftVelocity = status;
-        UpdateIndicatorColor(leftVelocityIndicator, status);
-        CheckConditions();
+        UpdateStatus(ref leftVelocity, leftVelocityIndicator, status);
     }
 
     public void UpdateLeftSpeedStatus(bool status)
     {
-        leftSpeed = status;
-        UpdateIndicatorColor(leftSpeedIndicator, status);
-        CheckConditions();
+        UpdateStatus(ref leftSpeed, leftSpeedIndicator, status);
     }
 
     public void UpdateRightVelocityStatus(bool status)
     {
-        rightVelocity = status;
-        UpdateIndicatorColor(rightVelocityIndicator, status);
-        CheckConditions();
+        UpdateStatus(ref rightVelocity, rightVelocityIndicator, status);
     }
 
     public void UpdateRightSpeedStatus(bool status)
     {
-        rightSpeed = status;
-        UpdateIndicatorColor(rightSpeedIndicator, status);
+        UpdateStatus(ref rightSpeed, rightSpeedIndicator, status);
+    }
+
+    private void UpdateStatus(ref bool condition, GameObject indicator, bool status)
+    {
+        condition = status;
+        UpdateIndicatorColor(indicator, status);
         CheckConditions();
     }
 

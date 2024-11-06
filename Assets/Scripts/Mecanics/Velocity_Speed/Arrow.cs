@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    public Vector3 direction; // Dirección de la flecha, asignada en el Inspector
-    private bool isDirectionChanged = false; // Indica si la dirección ha sido cambiada
-    private bool hasPassedEndArrow = false; // Indica si el jugador ha pasado por la última flecha
-    private Color originalColor; // Color original de la flecha
+    public Vector3 direction;
+    private bool isDirectionChanged = false; 
+    private bool hasPassedEndArrow = false; 
+    private Color originalColor; 
     private Renderer arrowRenderer;
-    private Quaternion originalRotation; // Rotación original de la flecha
+    private Quaternion originalRotation; 
 
     private void Start()
     {
@@ -22,20 +22,17 @@ public class Arrow : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            LeftCalculator speedCalculator = other.GetComponent<LeftCalculator>();
-            if (speedCalculator != null && IsMovingInCorrectDirection(other.transform))
+            BaseCalculator[] calculators = other.GetComponents<BaseCalculator>();
+            foreach (var calculator in calculators)
             {
-                speedCalculator.OnArrowPassed(this);
-                ChangeColor(Color.cyan); // Cambia el color al ser pisada
-            }
-            RightCalculator rightPathSpeedCalculator = other.GetComponent<RightCalculator>();
-            if (rightPathSpeedCalculator != null && IsMovingInCorrectDirection(other.transform))
-            {
-                rightPathSpeedCalculator.OnArrowPassed(this);
-                ChangeColor(Color.cyan); // Cambia el color al ser pisada
+                if (calculator.enabled && IsMovingInCorrectDirection(other.transform))
+                {
+                    calculator.OnArrowPassed(this);
+                    ChangeColor(Color.cyan);
+                    break; // Sal del bucle una vez que encuentres el script habilitado
+                }
             }
 
-            // Aquí es donde manejamos el cambio de dirección
             if (CompareTag("EndArrow") && other.CompareTag("RightPath"))
             {
                 hasPassedEndArrow = true; // Marcar que se ha pasado la flecha final
@@ -47,6 +44,7 @@ public class Arrow : MonoBehaviour
             }
         }
     }
+
 
     private bool IsMovingInCorrectDirection(Transform playerTransform)
     {
@@ -60,40 +58,37 @@ public class Arrow : MonoBehaviour
         arrowRenderer.material.color = color;
     }
 
-    // Método para cambiar la dirección de la flecha
     public void ChangeDirection()
     {
-        direction = -direction; // Cambiar la dirección a la opuesta
-        isDirectionChanged = !isDirectionChanged; // Alternar el estado de dirección cambiada
+        direction = -direction;
+        isDirectionChanged = !isDirectionChanged; 
         Debug.Log("La dirección de la flecha ha sido cambiada a: " + direction);
     }
 
     public void SetEndArrowPassed(bool value)
     {
-        hasPassedEndArrow = value; // Método para establecer si se ha pasado la flecha final
+        hasPassedEndArrow = value; 
     }
 
     public void RotateArrow()
     {
-        // Rotar 180 grados
+
         transform.Rotate(0, 180, 0);
-        // Actualizar la dirección
         direction = transform.forward;
         Debug.Log("La flecha ha sido rotada. Nueva dirección: " + direction);
     }
 
-    // Método para restablecer el color original de la flecha
     public void ResetColor()
     {
         arrowRenderer.material.color = originalColor;
     }
 
-    // Método para restablecer la dirección y la rotación original de la flecha
+
     public void ResetArrow()
     {
-        transform.rotation = originalRotation; // Restablecer la rotación original
-        direction = transform.forward; // Restablecer la dirección original
-        isDirectionChanged = false; // Restablecer el estado de dirección cambiada
-        ResetColor(); // Restablecer el color original
+        transform.rotation = originalRotation; 
+        direction = transform.forward; 
+        isDirectionChanged = false;
+        ResetColor(); 
     }
 }
