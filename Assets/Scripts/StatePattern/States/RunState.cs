@@ -52,6 +52,12 @@ namespace StatePattern
             {
                 player.PlayerStateMachine.TransitionTo(player.PlayerStateMachine.idleState);
             }
+
+            // if we slow down to walking speed, transition to walking
+            else if ((Mathf.Abs(player.CharController.velocity.x) < 5f && (Mathf.Abs(player.CharController.velocity.x) > 1f) || (Mathf.Abs(player.CharController.velocity.z) < 5f) && Mathf.Abs(player.CharController.velocity.z) > 1f))
+            {
+                player.PlayerStateMachine.TransitionTo(player.PlayerStateMachine.walkState);
+            }
         }
 
         public void Exit()

@@ -56,6 +56,13 @@ namespace StatePattern
 
         [SerializeField]private GameObject player;
 
+        [Header("MRUA")]
+        [SerializeField] private float mruaAcceleration = 2f; 
+        [SerializeField] private float mruaMaxTime = 5f;      
+        private float mruaCurrentTime;                        
+        private bool inMRUASection = false;
+
+
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
@@ -151,6 +158,13 @@ namespace StatePattern
                 playerIsDead = false;
             }
         }
+
+        public void MRUA(float speed)
+        {
+            Vector3 forwardMovement = transform.forward * speed * Time.deltaTime;
+            charController.Move(forwardMovement + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
+        }
+
 
         private void CalculateVertical()
         {

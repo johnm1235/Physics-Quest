@@ -33,21 +33,18 @@ public class MRUUI : MonoBehaviour
     {
         if (calculating)
         {
-            // Calcula el tiempo transcurrido
+
             float tiempoTranscurrido = Time.time - tiempoInicio;
             float posicionCalculada = posicionInicial + speedMRU * tiempoTranscurrido;
 
-            // Actualiza el texto de la fórmula con cálculos
             formulaText.text = $"X = {posicionInicial:F2} + {speedMRU:F2} * {tiempoTranscurrido:F2}\n" +
                                $"Posición Actual: {posicionCalculada:F2}";
 
-            // Muestra la posición final
             posFinalText.text = $"Posición Final Objetivo: {posFinal:F2}";
 
-            // Comprobar si la posición calculada supera la posición final
+
             if (posicionCalculada > posFinal)
             {
-                // Acción cuando el jugador supera la posición final
                 Debug.Log("Has superado la posición final. Has perdido.");
                 Reset();
                 GameManager.Instance.RestartSection();
@@ -57,7 +54,6 @@ public class MRUUI : MonoBehaviour
         }
         else
         {
-            // Muestra solo la fórmula sin cálculos
             UpdateFormulaText();
         }
     }
@@ -70,9 +66,7 @@ public class MRUUI : MonoBehaviour
 
     private void Reset()
     {
-        // Reinicia las variables de inicio
         tiempoInicio = Time.time;
-     //   posicionInicial = playerController.transform.position.x;
     }
 
     private void OnTriggerEnter(Collider other)

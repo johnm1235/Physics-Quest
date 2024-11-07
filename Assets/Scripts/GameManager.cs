@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public GameObject player;
-    public Transform[] sectionStartPositions;  // Array de puntos de inicio por sección
-    public int currentSection = 0;             // Índice de la sección actual
+    public Transform[] sectionStartPositions;  
+    public int currentSection = 0;             
     private bool isPlayerDead = false;
 
     private void Awake()
@@ -41,24 +41,22 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Restarting section " + currentSection);
 
-            // Obtener el CharacterController del jugador
             CharacterController charController = player.GetComponent<CharacterController>();
             if (charController != null)
             {
-                charController.enabled = false;  // Desactivar temporalmente el CharacterController
+                charController.enabled = false;  
             }
 
-            // Mover al jugador a la posición de inicio de la sección actual
             player.transform.position = sectionStartPositions[currentSection].position;
 
             if (charController != null)
             {
-                charController.enabled = true;  // Reactivar el CharacterController
+                charController.enabled = true;  
             }
 
             ResetSection();
             isPlayerDead = false;
-            Time.timeScale = 1f;  // Reanudar el juego
+            Time.timeScale = 1f;  
         }
         else
         {
@@ -66,27 +64,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Reiniciar la sección, reseteando obstáculos, enemigos, etc.
+
     public void ResetSection()
     {
-        Debug.Log("Section reset. All progress lost.");
-        // Aquí puedes agregar el código para resetear cualquier objeto o enemigo de la sección actual.
+
     }
 
     // Mostrar mensaje de derrota
     public void ShowDefeatMessage()
     {
         isPlayerDead = true;
-        Time.timeScale = 0f;  // Detener el juego
-        Debug.Log("You lost. Press 'R' to restart the section.");
+        Time.timeScale = 0f; 
+
     }
 
-    // Avanzar a la siguiente sección solo cuando se completa la sección
     public void AdvanceToNextSection()
     {
         if (currentSection < sectionStartPositions.Length - 1)
         {
-            currentSection++;  // Avanzar a la siguiente sección
+            currentSection++;  
             Debug.Log("Now in section " + currentSection);
         }
         else
@@ -95,10 +91,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Función que se llama cuando el jugador supera una sección (por ejemplo, alcanzando un objetivo o pasando por un trigger)
+
     public void CompleteSection()
     {
-        AdvanceToNextSection();  // Avanzar a la siguiente sección
-        Debug.Log("Section completed!");
+        AdvanceToNextSection();  
     }
 }

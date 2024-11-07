@@ -10,7 +10,7 @@ namespace StatePattern
     [RequireComponent(typeof(PlayerController))]
     public class PlayerStateView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI labelText;
+     //   [SerializeField] private TextMeshProUGUI labelText;
 
         private PlayerController player;
         private StateMachine playerStateMachine;
@@ -39,11 +39,11 @@ namespace StatePattern
         // change the UI.Text when the state changes
         private void OnStateChanged(IState state)
         {
-            if (labelText != null)
+         /*   if (labelText != null)
             {
                 labelText.text = state.GetType().Name;
                 labelText.color = state.MeshColor;
-            }
+            }*/
 
             ChangeMeshColor(state);
         }

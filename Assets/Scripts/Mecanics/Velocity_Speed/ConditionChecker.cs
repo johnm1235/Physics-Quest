@@ -10,16 +10,16 @@ public class ConditionChecker : MonoBehaviour
     public bool rightVelocity = false;
     public bool rightSpeed = false;
 
-    public GameObject door; // Objeto de la puerta a abrir
-    public GameObject leftVelocityIndicator; // Indicador de cumplimiento de velocidad del camino izquierdo
-    public GameObject leftSpeedIndicator; // Indicador de cumplimiento de rapidez del camino izquierdo
-    public GameObject rightVelocityIndicator; // Indicador de cumplimiento de velocidad del camino derecho
-    public GameObject rightSpeedIndicator; // Indicador de cumplimiento de rapidez del camino derecho
+    public GameObject door; 
+    public GameObject leftVelocityIndicator; 
+    public GameObject leftSpeedIndicator; 
+    public GameObject rightVelocityIndicator;
+    public GameObject rightSpeedIndicator; 
 
     public RightCalculator rightCalculator;
     public LeftCalculator leftCalculator;
 
-    private bool sectionCompleted = false; // Variable para rastrear si la sección ya se ha completado
+    private bool sectionCompleted = false; 
     private Coroutine checkCoroutine;
 
     private void Start()
