@@ -16,6 +16,7 @@ public class Sections : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canvasSpeed.SetActive(true); 
+         //   GameManager.Instance.CompleteSection();
         }
     }
 

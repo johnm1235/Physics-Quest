@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class EnergyBar : MonoBehaviour
 {
-    [SerializeField] private Slider energySlider; // Slider que muestra la energía
-    private int maxEnergyPerLevel; // Máximo de energía que se puede recolectar
-    private int currentKnowledgeCount; // Contador actual de conocimiento recolectado
+    [SerializeField] private Slider energySlider;
+    private int maxEnergyPerLevel; 
+    private int currentKnowledgeCount; 
 
     private void Start()
     {

@@ -13,6 +13,7 @@ TagManager:
   - startArrow
   - endArrow
   - midArrow
+  - MRU
   layers:
   - Default
   - TransparentFX

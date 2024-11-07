@@ -45,6 +45,15 @@ namespace StatePattern
         private float verticalVelocity;
         private float jumpCooldown;
 
+        [Header("MRU")]
+        [SerializeField] private float speedMRU = 4f;
+        [SerializeField] private float lossTime = 2f;
+        private float timeUnderSpeed;
+
+        private bool sectionMRU = false;
+
+        private bool playerIsDead = false;
+
         [SerializeField]private GameObject player;
 
         private void Awake()
@@ -89,23 +98,27 @@ namespace StatePattern
             }
 
 
-                // Determine whether the player is running
-                float currentMoveSpeed = playerInput.IsRunning ? moveSpeed * runMultiplier : moveSpeed;
+            // Determinar la velocidad actual
+            float currentMoveSpeed = playerInput.IsRunning ? moveSpeed * runMultiplier : moveSpeed;
+            float currentHorizontalSpeed = new Vector3(charController.velocity.x, 0.0f, charController.velocity.z).magnitude;
+            float tolerance = 0.1f;
 
-                // if we are not at target speed (outside of tolerance), lerp to the target speed
-                float currentHorizontalSpeed = new Vector3(charController.velocity.x, 0.0f, charController.velocity.z).magnitude;
-                float tolerance = 0.1f;
-
-                if (currentHorizontalSpeed < currentMoveSpeed - tolerance || currentHorizontalSpeed > currentMoveSpeed + tolerance)
-                {
-                    targetSpeed = Mathf.Lerp(currentHorizontalSpeed, currentMoveSpeed, Time.deltaTime * acceleration);
-                    targetSpeed = Mathf.Round(targetSpeed * 1000f) / 1000f;
-                }
-                else
-                {
-                    targetSpeed = currentMoveSpeed;
-                }
+            if (sectionMRU)
+            {
+                MRU(currentHorizontalSpeed);
+            }
             
+
+            if (currentHorizontalSpeed < currentMoveSpeed - tolerance || currentHorizontalSpeed > currentMoveSpeed + tolerance)
+            {
+                targetSpeed = Mathf.Lerp(currentHorizontalSpeed, currentMoveSpeed, Time.deltaTime * acceleration);
+                targetSpeed = Mathf.Round(targetSpeed * 1000f) / 1000f;
+            }
+            else
+            {
+                targetSpeed = currentMoveSpeed;
+            }
+
 
             charController.Move((inputVector.normalized * targetSpeed * Time.deltaTime) + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
 
@@ -114,8 +127,30 @@ namespace StatePattern
                 Quaternion targetRotation = Quaternion.LookRotation(inputVector);
                 player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
             }
+
         }
 
+        private void MRU(float currentHorizontalSpeed)
+        {
+            // Verifica si la velocidad es menor que la mínima permitida
+            if (currentHorizontalSpeed < speedMRU)
+            {
+                timeUnderSpeed += Time.deltaTime;
+                if (timeUnderSpeed >= lossTime)
+                {
+                    playerIsDead = true;
+                    Debug.Log("Has perdido: la velocidad ha bajado de la mínima permitida.");
+                 //   GameManager.Instance.RestartSection();
+                    sectionMRU = false;
+                }
+            }
+            else
+            {
+                // Reinicia el tiempo si la velocidad está por encima de la mínima
+                timeUnderSpeed = 0f;
+                playerIsDead = false;
+            }
+        }
 
         private void CalculateVertical()
         {
@@ -161,7 +196,19 @@ namespace StatePattern
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z), groundedRadius);
         }
 
-
-
+        private void OnTriggerEnter(Collider other)
+        {
+           if (other.CompareTag("MRU"))
+            {
+                sectionMRU = true;
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("MRU"))
+            {
+                sectionMRU = false;
+            }
+        }
     }
 }

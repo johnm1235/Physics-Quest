@@ -19,6 +19,9 @@ public class ConditionChecker : MonoBehaviour
     public RightCalculator rightCalculator;
     public LeftCalculator leftCalculator;
 
+    private bool sectionCompleted = false; // Variable para rastrear si la sección ya se ha completado
+    private Coroutine checkCoroutine;
+
     private void Start()
     {
         rightCalculator.enabled = false;
@@ -30,17 +33,34 @@ public class ConditionChecker : MonoBehaviour
         if (leftVelocity && leftSpeed && rightVelocity && rightSpeed)
         {
             OpenDoor();
+            sectionCompleted = true;
+
+                if (checkCoroutine == null)
+                {
+                    checkCoroutine = StartCoroutine(WaitAndCompleteSection());
+                }
         }
         else
         {
+            if (checkCoroutine != null)
+            {
+                StopCoroutine(checkCoroutine);
+                checkCoroutine = null;
+            }
             CloseDoor();
         }
+    }
+
+    private IEnumerator WaitAndCompleteSection()
+    {
+        yield return new WaitForSeconds(5f);
+        GameManager.Instance.CompleteSection();
+
     }
 
     private void OpenDoor()
     {
         door.SetActive(false);
-        Debug.Log("¡Puerta abierta! Se cumplieron ambas condiciones.");
     }
 
     private void CloseDoor()
