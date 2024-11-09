@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -8,10 +8,10 @@ public abstract class BaseCalculator : MonoBehaviour
     [Header("Indicators")]
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI rapidityText;
-    public TextMeshProUGUI distanceText;
-    public TextMeshProUGUI displacementText;
-    public TextMeshProUGUI time;
-    public TextMeshProUGUI time2;
+    public TextMeshProUGUI formulaSpeedText;
+    public TextMeshProUGUI formulaRapidityText;
+
+
 
     [Header("Arrows")]
     public Arrow startArrow;
@@ -77,13 +77,16 @@ public abstract class BaseCalculator : MonoBehaviour
 
     protected void UpdateUI(float speed, float rapidity)
     {
-        speedText.text = speed.ToString("F2");
-        rapidityText.text = rapidity.ToString("F2");
-        distanceText.text = totalDistance.ToString("F2");
-        displacementText.text = netDisplacement.ToString("F2");
-        time.text = timeElapsed.ToString("F2");
-        time2.text = timeElapsed.ToString("F2");
+        int netDisplacementInt = Mathf.FloorToInt(netDisplacement);
+        int timeElapsedInt = Mathf.FloorToInt(timeElapsed);
+        int rapidityInt = Mathf.FloorToInt(rapidity);
+        int totalDistanceInt = Mathf.FloorToInt(totalDistance);
+
+        speedText.text = $"{speed:F2}m/s = {netDisplacement:F2}m / {timeElapsed:F2}s";
+        rapidityText.text = $"{rapidity:F2}m/s = {totalDistance:F2}m / {timeElapsed:F2}s";
     }
+
+
 
     protected abstract void UpdateConditionChecker(float speed, float rapidity);
 
@@ -98,12 +101,12 @@ public abstract class BaseCalculator : MonoBehaviour
 
     protected void ResetUIText()
     {
-        speedText.text = "V";
-        rapidityText.text = "S";
-        distanceText.text = "d";
-        displacementText.text = "Ax";
-        time.text = "t";
-        time2.text = "t";
+        formulaSpeedText.text = "V  = Δx / t";
+        formulaRapidityText.text = "S  = d / t";
+
+        speedText.text = "V  = 0 / 0";
+        rapidityText.text = "S  = 0 / 0";
+
     }
 
     protected IEnumerator ResetColor()

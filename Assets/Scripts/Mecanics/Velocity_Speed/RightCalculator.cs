@@ -84,9 +84,12 @@ public class RightCalculator : BaseCalculator
         }
         else if (other.CompareTag("Reset"))
         {
+            isCalculating = false;
             ResetCalculations();
             endArrow.ResetColor();
             midArrowComponent.ResetColor();
+            startArrow.ResetColor();
+            isReturning = false;
         }
     }
 
@@ -109,7 +112,10 @@ public class RightCalculator : BaseCalculator
 
     protected override void UpdateConditionChecker(float speed, float rapidity)
     {
-        conditionChecker.UpdateRightVelocityStatus(speed >= requiredVelocity);
-        conditionChecker.UpdateRightSpeedStatus(rapidity >= requiredSpeed);
+        if (isReturning)
+        {
+            conditionChecker.UpdateRightVelocityStatus(speed >= requiredVelocity);
+            conditionChecker.UpdateRightSpeedStatus(rapidity >= requiredSpeed);
+        }
     }
 }

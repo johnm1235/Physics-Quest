@@ -45,7 +45,7 @@ namespace StatePattern
                 player.PlayerStateMachine.TransitionTo(player.PlayerStateMachine.idleState);
             }
             // if we exceed walking speed, transition to running
-            else if ((Mathf.Abs(player.CharController.velocity.x) > 5f && (Mathf.Abs(player.CharController.velocity.x) < 9f) || (Mathf.Abs(player.CharController.velocity.z) > 5f) && Mathf.Abs(player.CharController.velocity.z) < 9f))
+            else if ((Mathf.Abs(player.CharController.velocity.x) > 6f && (Mathf.Abs(player.CharController.velocity.x) < 9f) || (Mathf.Abs(player.CharController.velocity.z) > 6f) && Mathf.Abs(player.CharController.velocity.z) < 9f))
             {
                 player.PlayerStateMachine.TransitionTo(player.PlayerStateMachine.runState);
             }

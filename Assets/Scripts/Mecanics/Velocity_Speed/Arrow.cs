@@ -87,7 +87,7 @@ public class Arrow : MonoBehaviour
     public void ResetArrow()
     {
         transform.rotation = originalRotation; 
-        direction = transform.forward; 
+        direction = transform.right; 
         isDirectionChanged = false;
         ResetColor(); 
     }

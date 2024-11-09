@@ -14,6 +14,9 @@ TagManager:
   - endArrow
   - midArrow
   - MRU
+  - Rampa
+  - MRUA
+  - Next
   layers:
   - Default
   - TransparentFX

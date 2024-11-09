@@ -1,86 +1,47 @@
 using StatePattern;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class MRUA : MonoBehaviour
 {
-    [Header("MRUA Settings")]
-    [SerializeField] private float mruaAcceleration = 2f; 
-    [SerializeField] private float mruaMaxTime = 5f;      
-    private float mruaCurrentTime;                       
-    private float currentSpeed;                           
+    public PlayerController playerController;
 
-    [Header("UI Elements")]
-    [SerializeField] private TextMeshProUGUI velocityText;
-    [SerializeField] private TextMeshProUGUI accelerationText;
-    [SerializeField] private TextMeshProUGUI timeText;
+    [Header("MRUA")]
+    [SerializeField] TextMeshProUGUI speedMRUA;
+    [SerializeField] TextMeshProUGUI aceleration;
+    [SerializeField] Slider speedSlider;
 
-    private bool isInMRUASection = false;
-    private PlayerController playerController;
-
-    private void Awake()
+    public void Start()
     {
-        playerController = GetComponent<PlayerController>();
+        // playerController = GetComponent<PlayerController>();
+        speedSlider.onValueChanged.AddListener(UpdateSpeed);
+  //      speedSlider.interactable = false; // Desactiva la interacción del slider
     }
 
-    private void Update()
+    public void UpdateSpeed(float value)
     {
-        if (isInMRUASection)
-        {
-            UpdateMRUAMechanics();
-            UpdateUI();
-        }
+        playerController.moveSpeed = value;
+        // Mostrar la velocidad en speedMRUA
+        speedMRUA.text = "Velocidad: " + value;
+        // Mostrar la aceleración en aceleration
+        aceleration.text = "Aceleración: " + playerController.acceleration;
     }
 
-    public void StartMRUA()
+    public void ResetValues()
     {
-        isInMRUASection = true;
-        mruaCurrentTime = 0f;
-        currentSpeed = 0f;
-    }
-
-    public void StopMRUA()
-    {
-        isInMRUASection = false;
-        ResetUI();
-    }
-
-    private void UpdateMRUAMechanics()
-    {
-        currentSpeed += mruaAcceleration * Time.deltaTime;
-
-        playerController.MRUA(currentSpeed);
-
-        mruaCurrentTime += Time.deltaTime;
-        if (mruaCurrentTime >= mruaMaxTime)
-        {
-            Debug.Log("Tiempo agotado en MRUA.");
-            StopMRUA();
-            GameManager.Instance.RestartSection();
-        }
-    }
-
-    private void UpdateUI()
-    {
-        if (velocityText != null) velocityText.text = $"Velocidad: {currentSpeed:F2}";
-        if (accelerationText != null) accelerationText.text = $"Aceleración: {mruaAcceleration:F2}";
-        if (timeText != null) timeText.text = $"Tiempo restante: {Mathf.Max(0, mruaMaxTime - mruaCurrentTime):F2}";
-    }
-
-    private void ResetUI()
-    {
-        if (velocityText != null) velocityText.text = "Velocidad: 0";
-        if (accelerationText != null) accelerationText.text = "Aceleración: 0";
-        if (timeText != null) timeText.text = "Tiempo restante: -";
+        playerController.moveSpeed = 4;
+        speedSlider.value = 0;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.CompleteSection();
+          //  GameManager.Instance.AdvanceToNextSection();
+            speedSlider.onValueChanged.AddListener(UpdateSpeed);
         }
     }
 
@@ -88,7 +49,8 @@ public class MRUA : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
+            speedSlider.onValueChanged.RemoveListener(UpdateSpeed);
+            ResetValues();
         }
     }
 }

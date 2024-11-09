@@ -6,7 +6,6 @@ public class LeftCalculator : BaseCalculator
 {
     public override void OnArrowPassed(Arrow arrow)
     {
-        Debug.Log("Hola");
         if (!isCalculating && arrow.CompareTag(nameof(startArrow)))
         {
             StartCalculations();
@@ -39,6 +38,8 @@ public class LeftCalculator : BaseCalculator
     {
         if (other.CompareTag("Reset"))
         {
+            isCalculating = false;
+            StartCoroutine(ResetColor());
             ResetCalculations();
         }
     }

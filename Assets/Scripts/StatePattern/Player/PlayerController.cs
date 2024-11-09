@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace StatePattern
 {
@@ -14,9 +15,9 @@ namespace StatePattern
 
         [Header("Movement")]
         [Tooltip("Horizontal speed")]
-        [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] public float moveSpeed = 5f;
         [Tooltip("Rate of change for move speed")]
-        [SerializeField] private float acceleration = 10f;
+        [SerializeField] public float acceleration = 10f;
         [Tooltip("Max height to jump")]
         [SerializeField] private float jumpHeight = 1.25f;
 
@@ -56,11 +57,7 @@ namespace StatePattern
 
         [SerializeField]private GameObject player;
 
-        [Header("MRUA")]
-        [SerializeField] private float mruaAcceleration = 2f; 
-        [SerializeField] private float mruaMaxTime = 5f;      
-        private float mruaCurrentTime;                        
-        private bool inMRUASection = false;
+
 
 
         private void Awake()
@@ -68,8 +65,6 @@ namespace StatePattern
             playerInput = GetComponent<PlayerInput>();
             charController = GetComponent<CharacterController>();
             anim = GetComponent<Animator>();
-
-            // initialize state machine
             playerStateMachine = new StateMachine(this);
 
 
@@ -97,6 +92,7 @@ namespace StatePattern
 
         private void Move()
         {
+
             Vector3 inputVector = playerInput.InputVector;
 
             if (inputVector == Vector3.zero)
@@ -113,8 +109,12 @@ namespace StatePattern
             if (sectionMRU)
             {
                 MRU(currentHorizontalSpeed);
+
             }
-            
+
+
+
+
 
             if (currentHorizontalSpeed < currentMoveSpeed - tolerance || currentHorizontalSpeed > currentMoveSpeed + tolerance)
             {
@@ -159,11 +159,7 @@ namespace StatePattern
             }
         }
 
-        public void MRUA(float speed)
-        {
-            Vector3 forwardMovement = transform.forward * speed * Time.deltaTime;
-            charController.Move(forwardMovement + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
-        }
+
 
 
         private void CalculateVertical()
@@ -216,6 +212,7 @@ namespace StatePattern
             {
                 sectionMRU = true;
             }
+
         }
         private void OnTriggerExit(Collider other)
         {
@@ -223,6 +220,7 @@ namespace StatePattern
             {
                 sectionMRU = false;
             }
+
         }
     }
 }

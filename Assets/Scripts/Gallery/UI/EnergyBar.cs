@@ -6,25 +6,26 @@ using UnityEngine.UI;
 public class EnergyBar : MonoBehaviour
 {
     [SerializeField] private Slider energySlider;
-    private int maxEnergyPerLevel; 
-    private int currentKnowledgeCount; 
+    private int maxEnergyPerLevel;
+    private int currentKnowledgeCount;
 
     private void Start()
     {
-        // Obtén el máximo de energía desde KnowledgeManager
-        maxEnergyPerLevel = KnowledgeManager.Instance.MaxEnergyPerLevel; // Asegúrate de que este método exista y sea accesible
-        energySlider.maxValue = maxEnergyPerLevel; // Establece el máximo del slider
-        currentKnowledgeCount = 0; // Inicializa el contador
-        energySlider.value = currentKnowledgeCount; // Establece el valor inicial del slider
+       
+        maxEnergyPerLevel = KnowledgeManager.Instance.MaxEnergyPerLevel; 
+        energySlider.maxValue = maxEnergyPerLevel; 
+        currentKnowledgeCount = 0; 
+        energySlider.value = currentKnowledgeCount; 
+        energySlider.interactable = false; 
     }
 
     public void UpdateEnergyBar()
     {
-        // Verifica que el conocimiento recolectado no supere el máximo permitido
+   
         if (currentKnowledgeCount < maxEnergyPerLevel)
         {
-            currentKnowledgeCount++; // Incrementa el contador
-            energySlider.value = currentKnowledgeCount; // Actualiza el slider con el nuevo valor
+            currentKnowledgeCount++; 
+            energySlider.value = currentKnowledgeCount; 
             Debug.Log("Knowledge collected! Current energy: " + currentKnowledgeCount);
         }
         else
@@ -33,10 +34,10 @@ public class EnergyBar : MonoBehaviour
         }
     }
 
-    // Este método puede ser usado para resetear la barra al cambiar de nivel
+
     public void ResetEnergy()
     {
         currentKnowledgeCount = 0;
-        energySlider.value = 0; // Resetea la barra visualmente
+        energySlider.value = 0; 
     }
 }

@@ -14,13 +14,17 @@ public class ConditionChecker : MonoBehaviour
     public GameObject leftVelocityIndicator; 
     public GameObject leftSpeedIndicator; 
     public GameObject rightVelocityIndicator;
-    public GameObject rightSpeedIndicator; 
+    public GameObject rightSpeedIndicator;
+    public GameObject door1;
+    public GameObject door2;
+    [SerializeField] private ButtonCheck buttonCheck;
 
     public RightCalculator rightCalculator;
     public LeftCalculator leftCalculator;
 
     private bool sectionCompleted = false; 
     private Coroutine checkCoroutine;
+
 
     private void Start()
     {
@@ -30,15 +34,27 @@ public class ConditionChecker : MonoBehaviour
 
     public void CheckConditions()
     {
-        if (leftVelocity && leftSpeed && rightVelocity && rightSpeed)
+
+        if (leftVelocity && leftSpeed)
         {
-            OpenDoor();
-            sectionCompleted = true;
+            OpenDoor1();
+            if (rightSpeed && rightVelocity)
+            {
+                OpenDoor2();
+                OpenDoor();
+                sectionCompleted = true;
 
                 if (checkCoroutine == null)
                 {
                     checkCoroutine = StartCoroutine(WaitAndCompleteSection());
                 }
+
+            }
+            else
+            {
+                CloseDoor();
+            }
+
         }
         else
         {
@@ -47,7 +63,7 @@ public class ConditionChecker : MonoBehaviour
                 StopCoroutine(checkCoroutine);
                 checkCoroutine = null;
             }
-            CloseDoor();
+            CloseDoor1();
         }
     }
 
@@ -63,9 +79,24 @@ public class ConditionChecker : MonoBehaviour
         door.SetActive(false);
     }
 
+    private void OpenDoor1()
+    {
+        door1.SetActive(false);
+    }
+    private void OpenDoor2()
+    {
+        door2.SetActive(false);
+    }
+
     private void CloseDoor()
     {
         door.SetActive(true);
+        door2.SetActive(true);
+    }
+
+    private void CloseDoor1()
+    {
+        door1.SetActive(true);
     }
 
     public void UpdateLeftVelocityStatus(bool status)
@@ -105,18 +136,16 @@ public class ConditionChecker : MonoBehaviour
         if (other.CompareTag("LeftPath"))
         {
             leftCalculator.enabled = true;
-            Debug.Log("Trigger entered: " + other.tag);
         }
         else if (other.CompareTag("RightPath"))
         {
             rightCalculator.enabled = true;
-            Debug.Log("Trigger entered: " + other.tag);
         }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Trigger exited: " + other.tag);
         if (other.CompareTag("LeftPath"))
         {
             leftCalculator.enabled = false;
