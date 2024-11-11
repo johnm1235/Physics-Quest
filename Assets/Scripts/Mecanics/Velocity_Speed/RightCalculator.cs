@@ -9,6 +9,10 @@ public class RightCalculator : BaseCalculator
     private bool isReturning = false;
     private bool isInRightPath = false;
 
+    private bool middleArrow = false;
+
+    public bool IsReturning { get { return isReturning; } set { isReturning = value; } }
+
     public override void OnArrowPassed(Arrow arrow)
     {
         if (!isCalculating && arrow.CompareTag(nameof(startArrow)))
@@ -35,6 +39,8 @@ public class RightCalculator : BaseCalculator
         if (arrow.CompareTag(nameof(midArrow)) && !isReturning)
         {
             HandleMidArrowPass(arrow);
+          //  middleArrow = true;
+
         }
         else if (arrow.CompareTag(nameof(endArrow)) && isInRightPath)
         {
@@ -46,6 +52,7 @@ public class RightCalculator : BaseCalculator
     {
         arrow.ChangeColor(Color.cyan);
         endArrow.ResetColor();
+
     }
 
     private void HandleEndArrowPass(Arrow arrow)
@@ -59,12 +66,14 @@ public class RightCalculator : BaseCalculator
         else
         {
             EndCalculations(arrow);
+            
         }
     }
 
     private void StartReturn(Arrow arrow)
     {
         isReturning = true;
+        middleArrow = true;
         arrow.SetEndArrowPassed(true);
         arrow.RotateArrow();
         midArrow.GetComponent<Arrow>().ResetColor();
@@ -72,6 +81,7 @@ public class RightCalculator : BaseCalculator
 
     private void EndCalculations(Arrow arrow)
     {
+        Debug.Log("medio");
         isCalculating = false;
         StartCoroutine(ResetColors(arrow));
     }
@@ -112,7 +122,7 @@ public class RightCalculator : BaseCalculator
 
     protected override void UpdateConditionChecker(float speed, float rapidity)
     {
-        if (isReturning)
+        if (middleArrow)
         {
             conditionChecker.UpdateRightVelocityStatus(speed >= requiredVelocity);
             conditionChecker.UpdateRightSpeedStatus(rapidity >= requiredSpeed);

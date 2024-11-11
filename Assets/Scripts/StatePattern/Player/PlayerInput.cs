@@ -21,6 +21,9 @@ namespace StatePattern
 
         [SerializeField] private KeyCode openMenu = KeyCode.M;  // Interact key
 
+        [SerializeField] public KeyCode min = KeyCode.LeftArrow;
+        [SerializeField] public KeyCode max = KeyCode.RightArrow;
+
         public Vector3 InputVector => inputVector;
         public bool IsJumping { get => isJumping; set => isJumping = value; }
         public bool IsRunning { get => isRunning; set => isRunning = value; }  // Added running state
@@ -33,6 +36,8 @@ namespace StatePattern
 
         public bool IsMenuOpen { get => isMenuOpen; set => isMenuOpen = value; }
         private bool isMenuOpen;
+
+
 
         private Vector3 inputVector;
         private bool isJumping;
@@ -81,6 +86,7 @@ namespace StatePattern
             isAttacking = Input.GetKeyDown(attack);
 
             isMenuOpen = Input.GetKeyDown(openMenu);
+
         }
 
         private void Update()

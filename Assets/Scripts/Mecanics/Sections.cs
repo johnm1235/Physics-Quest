@@ -5,18 +5,20 @@ using UnityEngine;
 public class Sections : MonoBehaviour
 {
     public GameObject canvasSpeed;
+    public GameObject objCalculate;
 
     public void Start()
     {
         canvasSpeed.SetActive(false);
+        objCalculate.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            canvasSpeed.SetActive(true); 
-         //   GameManager.Instance.CompleteSection();
+            canvasSpeed.SetActive(true);
+            objCalculate.SetActive(true);
         }
     }
 
@@ -24,7 +26,8 @@ public class Sections : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            canvasSpeed.SetActive(false); 
+            canvasSpeed.SetActive(false);
+            objCalculate.SetActive(false);
         }
     }
 }

@@ -113,9 +113,6 @@ namespace StatePattern
             }
 
 
-
-
-
             if (currentHorizontalSpeed < currentMoveSpeed - tolerance || currentHorizontalSpeed > currentMoveSpeed + tolerance)
             {
                 targetSpeed = Mathf.Lerp(currentHorizontalSpeed, currentMoveSpeed, Time.deltaTime * acceleration);

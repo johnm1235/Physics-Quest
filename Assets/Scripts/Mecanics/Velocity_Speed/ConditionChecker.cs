@@ -32,8 +32,18 @@ public class ConditionChecker : MonoBehaviour
         leftCalculator.enabled = false;
     }
 
+    public void Update()
+    {
+        if (buttonCheck.button && !sectionCompleted)
+        {
+            GameManager.Instance.AdvanceToNextSection();
+            sectionCompleted = true;
+        }
+    }
+
     public void CheckConditions()
     {
+
 
         if (leftVelocity && leftSpeed)
         {
@@ -42,11 +52,11 @@ public class ConditionChecker : MonoBehaviour
             {
                 OpenDoor2();
                 OpenDoor();
-                sectionCompleted = true;
+              //  sectionCompleted = true;
 
                 if (checkCoroutine == null)
                 {
-                    checkCoroutine = StartCoroutine(WaitAndCompleteSection());
+                    //checkCoroutine = StartCoroutine(WaitAndCompleteSection());
                 }
 
             }

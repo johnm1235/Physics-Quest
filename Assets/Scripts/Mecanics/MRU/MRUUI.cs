@@ -1,4 +1,4 @@
-using System.Collections;
+锘縰sing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,11 +6,11 @@ using StatePattern;
 
 public class MRUUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI calcText; // Referencia al componente de texto para la f髍mula
-    [SerializeField] private TextMeshProUGUI formulatext; // Referencia al componente de texto para la f髍mula
-    [SerializeField] private TextMeshProUGUI posFinalText; // Referencia al texto de la posici髇 final
+    [SerializeField] private TextMeshProUGUI calcText; // Referencia al componente de texto para la f贸rmula
+    [SerializeField] private TextMeshProUGUI formulatext; // Referencia al componente de texto para la f贸rmula
+    [SerializeField] private TextMeshProUGUI posFinalText; // Referencia al texto de la posici贸n final
     [SerializeField] private float speedMRU = 5f; // Velocidad constante
-    [SerializeField] private float posFinal = 100f; // Posici髇 final que debe alcanzar
+    [SerializeField] private float posFinal = 100f; // Posici贸n final que debe alcanzar
     [SerializeField] private ButtonCheck buttonCheck; // Referencia al script de los botones
 
     private float tiempoInicio;
@@ -24,6 +24,7 @@ public class MRUUI : MonoBehaviour
         // Inicializa las variables de inicio
         playerController = GetComponent<PlayerController>();
         UpdateFormulaText();
+        calculating = false;
     }
 
     private void Update()
@@ -42,21 +43,23 @@ public class MRUUI : MonoBehaviour
             calcText.text = $"{posicionCalculada:F2}m = {posicionInicial}m + {speedMRU}m/s * {tiempoTranscurrido:F2}s";
             formulatext.text = $"X = X0 + V * T";
 
-            posFinalText.text = $"Posici髇 Final: {posFinal:F2}";
+            posFinalText.text = $"Posici贸n Final: {posFinal:F2}";
 
             if (posicionCalculada <= posFinal && buttonCheck.button)
             {
-                Debug.Log("Has alcanzado la posici髇 final. Has ganado.");
+                calcText.color = Color.green;
+                Debug.Log("Has alcanzado la posici贸n final. Has ganado.");
                 calculating = false;
                 GameManager.Instance.AdvanceToNextSection();
             }
 
             else if (posicionCalculada > posFinal)
             {
-                Debug.Log("Has superado la posici髇 final. Has perdido.");
-                Reset();
+                Debug.Log("Has superado la posici贸n final. Has perdido.");
+                ResetAll();
                 GameManager.Instance.RestartSection();
                 calculating = false;
+                calcText.color = Color.white;
             }
 
         }
@@ -69,12 +72,13 @@ public class MRUUI : MonoBehaviour
     private void UpdateFormulaText()
     {
         calcText.text = $"X = {posicionInicial:F2} + {speedMRU:F2} * t";
-        posFinalText.text = $"Posici髇 Final: {posFinal:F2}";
+        posFinalText.text = $"Posici贸n Final: {posFinal:F2}";
     }
 
-    private void Reset()
+    private void ResetAll()
     {
         tiempoInicio = Time.time;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -82,7 +86,7 @@ public class MRUUI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             calculating = true;
-            Reset();
+            ResetAll();
         }
     }
 

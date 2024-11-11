@@ -1,4 +1,4 @@
-using StatePattern;
+ï»¿using StatePattern;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,40 +8,81 @@ using UnityEngine.UI;
 public class MRUA : MonoBehaviour
 {
     public PlayerController playerController;
+    public PlayerInput input;
 
     [Header("MRUA")]
     [SerializeField] TextMeshProUGUI speedMRUA;
-    [SerializeField] TextMeshProUGUI aceleration;
-    [SerializeField] Slider speedSlider;
+    [SerializeField] TextMeshProUGUI formulaMRUA;
+    [SerializeField] Slider accelerationSlider;
+    [SerializeField] ButtonCheck buttonCheck;
+
+    private bool hasAdvancedToNextSection = false;
+
+    private float initialSpeed;
+    public float elapsedTime = 2;
+    private float sliderStep = 0.01f;
+
+    private void Awake()
+    {
+        this.enabled = false;
+    }
 
     public void Start()
     {
-        // playerController = GetComponent<PlayerController>();
-        speedSlider.onValueChanged.AddListener(UpdateSpeed);
-  //      speedSlider.interactable = false; // Desactiva la interacción del slider
+        initialSpeed = playerController.moveSpeed;
+        accelerationSlider.value = playerController.acceleration;
+        formulaMRUA.text = "V = V0 + a * t";
+        ResetValues();
     }
 
-    public void UpdateSpeed(float value)
+    public void Update()
     {
-        playerController.moveSpeed = value;
-        // Mostrar la velocidad en speedMRUA
-        speedMRUA.text = "Velocidad: " + value;
-        // Mostrar la aceleración en aceleration
-        aceleration.text = "Aceleración: " + playerController.acceleration;
+        if (Input.GetKey(input.min)) 
+        {
+            accelerationSlider.value -= sliderStep;
+        }
+        if (Input.GetKey(input.max)) 
+        {
+            accelerationSlider.value += sliderStep;
+        }
+        UpdateAcceleration(accelerationSlider.value);
+
+        float currentSpeed = initialSpeed + playerController.acceleration * elapsedTime;
+        playerController.moveSpeed = currentSpeed;
+
+        speedMRUA.text = $"{currentSpeed:F2}m/s = {initialSpeed}m/s + {playerController.acceleration:F2}m/sÂ² * {elapsedTime}s";
+
+        if (buttonCheck.button && !hasAdvancedToNextSection)
+        {
+            speedMRUA.color = Color.green;
+            GameManager.Instance.AdvanceToNextSection();
+            hasAdvancedToNextSection = true;
+        }
+
+    }
+
+    public void UpdateAcceleration(float value)
+    {
+        playerController.acceleration = value;
+        initialSpeed = 0f; 
+
+        
     }
 
     public void ResetValues()
     {
-        playerController.moveSpeed = 4;
-        speedSlider.value = 0;
+        playerController.acceleration = 0;
+        accelerationSlider.value = 0;
+        initialSpeed = 0;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-          //  GameManager.Instance.AdvanceToNextSection();
-            speedSlider.onValueChanged.AddListener(UpdateSpeed);
+            this.enabled = true;
+            accelerationSlider.onValueChanged.AddListener(UpdateAcceleration);
+            
         }
     }
 
@@ -49,8 +90,10 @@ public class MRUA : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            speedSlider.onValueChanged.RemoveListener(UpdateSpeed);
-            ResetValues();
+            accelerationSlider.onValueChanged.RemoveListener(UpdateAcceleration);
+            playerController.acceleration = 20;
+            playerController.moveSpeed = 5;
+            this.enabled = false;
         }
     }
 }
