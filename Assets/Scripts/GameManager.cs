@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public Transform[] sectionStartPositions;  
     public int currentSection = 0;             
-    private bool isPlayerDead = false;
 
     private void Awake()
     {
@@ -54,8 +54,8 @@ public class GameManager : MonoBehaviour
                 charController.enabled = true;  
             }
 
-            ResetSection();
-            isPlayerDead = false;
+            
+
             Time.timeScale = 1f;  
         }
         else
@@ -65,15 +65,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ResetSection()
-    {
-
-    }
 
     // Mostrar mensaje de derrota
     public void ShowDefeatMessage()
     {
-        isPlayerDead = true;
         Time.timeScale = 0f; 
 
     }
@@ -95,5 +90,10 @@ public class GameManager : MonoBehaviour
     public void CompleteSection()
     {
         AdvanceToNextSection();  
+    }
+
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

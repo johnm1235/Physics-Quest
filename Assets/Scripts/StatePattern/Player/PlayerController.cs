@@ -9,7 +9,6 @@ namespace StatePattern
     [RequireComponent(typeof(PlayerInput), typeof(CharacterController), typeof(Animator))]
     public class PlayerController : MonoBehaviour
     {
-
         [SerializeField] private PlayerInput playerInput;
         private StateMachine playerStateMachine;
 
@@ -33,13 +32,11 @@ namespace StatePattern
         [SerializeField] private float groundedOffset = 0.15f;
         [SerializeField] private LayerMask groundLayers;
 
-
         private Animator anim;
 
         public CharacterController CharController => charController;
         public bool IsGrounded => isGrounded;
         public StateMachine PlayerStateMachine => playerStateMachine;
-
 
         private CharacterController charController;
         private float targetSpeed;
@@ -52,13 +49,12 @@ namespace StatePattern
         private float timeUnderSpeed;
 
         private bool sectionMRU = false;
-
         private bool playerIsDead = false;
 
-        [SerializeField]private GameObject player;
+        [SerializeField] private GameObject player;
 
-
-
+        // Nueva variable para el nivel del jugador
+        [SerializeField] private int playerLevel = 1;
 
         private void Awake()
         {
@@ -66,14 +62,11 @@ namespace StatePattern
             charController = GetComponent<CharacterController>();
             anim = GetComponent<Animator>();
             playerStateMachine = new StateMachine(this);
-
-
         }
 
         private void Start()
         {
             playerStateMachine.Initialize(playerStateMachine.idleState);
-
         }
 
         private void Update()
@@ -84,15 +77,12 @@ namespace StatePattern
 
         private void LateUpdate()
         {
-
             CalculateVertical();
             Move();
-
         }
 
         private void Move()
         {
-
             Vector3 inputVector = playerInput.InputVector;
 
             if (inputVector == Vector3.zero)
@@ -100,18 +90,15 @@ namespace StatePattern
                 targetSpeed = 0;
             }
 
-
             // Determinar la velocidad actual
-            float currentMoveSpeed = playerInput.IsRunning ? moveSpeed * runMultiplier : moveSpeed;
+            float currentMoveSpeed = (playerInput.IsRunning && playerLevel >= 2) ? moveSpeed * runMultiplier : moveSpeed;
             float currentHorizontalSpeed = new Vector3(charController.velocity.x, 0.0f, charController.velocity.z).magnitude;
             float tolerance = 0.1f;
 
             if (sectionMRU)
             {
                 MRU(currentHorizontalSpeed);
-
             }
-
 
             if (currentHorizontalSpeed < currentMoveSpeed - tolerance || currentHorizontalSpeed > currentMoveSpeed + tolerance)
             {
@@ -123,7 +110,6 @@ namespace StatePattern
                 targetSpeed = currentMoveSpeed;
             }
 
-
             charController.Move((inputVector.normalized * targetSpeed * Time.deltaTime) + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
 
             if (inputVector != Vector3.zero)
@@ -131,7 +117,6 @@ namespace StatePattern
                 Quaternion targetRotation = Quaternion.LookRotation(inputVector);
                 player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
             }
-
         }
 
         private void MRU(float currentHorizontalSpeed)
@@ -144,7 +129,7 @@ namespace StatePattern
                 {
                     playerIsDead = true;
                     Debug.Log("Has perdido: la velocidad ha bajado de la mínima permitida.");
-                 //   GameManager.Instance.RestartSection();
+                    // GameManager.Instance.RestartSection();
                     sectionMRU = false;
                 }
             }
@@ -156,9 +141,6 @@ namespace StatePattern
             }
         }
 
-
-
-
         private void CalculateVertical()
         {
             if (isGrounded)
@@ -168,7 +150,7 @@ namespace StatePattern
                     verticalVelocity = -2f;
                 }
 
-                if (playerInput.IsJumping && jumpCooldown <= 0f)
+                if (playerInput.IsJumping && jumpCooldown <= 0f && playerLevel >= 2)
                 {
                     verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
                 }
@@ -205,19 +187,18 @@ namespace StatePattern
 
         private void OnTriggerEnter(Collider other)
         {
-           if (other.CompareTag("MRU"))
+            if (other.CompareTag("MRU"))
             {
                 sectionMRU = true;
             }
-
         }
+
         private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("MRU"))
             {
                 sectionMRU = false;
             }
-
         }
     }
 }

@@ -18,6 +18,8 @@ public class MRUUI : MonoBehaviour
     private PlayerController playerController;
 
     private bool calculating = false;
+    private bool sectionCompleted = false;
+    private float previousSpeedMRU;
 
     private void Start()
     {
@@ -25,6 +27,7 @@ public class MRUUI : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         UpdateFormulaText();
         calculating = false;
+        previousSpeedMRU = speedMRU;
     }
 
     private void Update()
@@ -36,32 +39,39 @@ public class MRUUI : MonoBehaviour
     {
         if (calculating)
         {
-
             float tiempoTranscurrido = Time.time - tiempoInicio;
             float posicionCalculada = posicionInicial + speedMRU * tiempoTranscurrido;
 
             calcText.text = $"{posicionCalculada:F2}m = {posicionInicial}m + {speedMRU}m/s * {tiempoTranscurrido:F2}s";
-            formulatext.text = $"X = X0 + V * T";
-
+            formulatext.text = $"X = x0 + v * t";
             posFinalText.text = $"Posición Final: {posFinal:F2}";
 
-            if (posicionCalculada <= posFinal && buttonCheck.button)
+            if (speedMRU < previousSpeedMRU)
+            {
+                Debug.Log("Has bajado la velocidad. Has perdido.");
+                tiempoInicio = Time.time;
+                GameManager.Instance.RestartSection();
+                calculating = false;
+                calcText.color = Color.white;
+            }
+            else if (posicionCalculada <= posFinal && buttonCheck.button && !sectionCompleted)
             {
                 calcText.color = Color.green;
                 Debug.Log("Has alcanzado la posición final. Has ganado.");
                 calculating = false;
                 GameManager.Instance.AdvanceToNextSection();
+                sectionCompleted = true;
             }
-
             else if (posicionCalculada > posFinal)
             {
                 Debug.Log("Has superado la posición final. Has perdido.");
-                ResetAll();
+                tiempoInicio = Time.time;
                 GameManager.Instance.RestartSection();
                 calculating = false;
                 calcText.color = Color.white;
             }
 
+            previousSpeedMRU = speedMRU;
         }
         else
         {
@@ -71,14 +81,21 @@ public class MRUUI : MonoBehaviour
 
     private void UpdateFormulaText()
     {
-        calcText.text = $"X = {posicionInicial:F2} + {speedMRU:F2} * t";
+        calcText.text = $"X = {posicionInicial:F2}m + {speedMRU:F2}m/s * {0,00:F2}s";
         posFinalText.text = $"Posición Final: {posFinal:F2}";
     }
 
-    private void ResetAll()
+    public void StopCalculations()
+    {
+        calculating = false;
+        UpdateFormulaText(); 
+    }
+
+
+    public void ResetAll()
     {
         tiempoInicio = Time.time;
-
+        calculating = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -86,7 +103,7 @@ public class MRUUI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             calculating = true;
-            ResetAll();
+            tiempoInicio = Time.time;
         }
     }
 
