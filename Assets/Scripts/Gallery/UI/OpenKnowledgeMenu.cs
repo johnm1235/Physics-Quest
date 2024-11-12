@@ -12,8 +12,17 @@ public class OpenKnowledgeMenu : MonoBehaviour
     {
         if (playerInput.IsMenuOpen)
         {
-            knowledgeMenu.SetActive(!knowledgeMenu.activeSelf);
+            bool isActive = !knowledgeMenu.activeSelf;
+            knowledgeMenu.SetActive(isActive);
+
+            if (isActive)
+            {
+                GameManager.Instance.UnlockCursor();
+            }
+            else
+            {
+                GameManager.Instance.BlockCursor();
+            }
         }
     }
 }
-

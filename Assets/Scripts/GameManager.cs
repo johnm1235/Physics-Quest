@@ -8,8 +8,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public GameObject player;
-    public Transform[] sectionStartPositions;  
-    public int currentSection = 0;             
+    public Transform[] sectionStartPositions;
+    public int currentSection = 0;
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Camera secondaryCamera;
 
     private void Awake()
     {
@@ -26,6 +28,15 @@ public class GameManager : MonoBehaviour
         if (player == null) player = GameObject.FindWithTag("Player");
     }
 
+    public void Start()
+    {
+        if (secondaryCamera == null)
+        {
+            Debug.LogError("Main camera is not assigned.");
+        }
+        BlockCursor();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R) )
@@ -37,6 +48,8 @@ public class GameManager : MonoBehaviour
     // Reiniciar la sección actual
     public void RestartSection()
     {
+        mainCamera.enabled = true;
+        secondaryCamera.enabled = false;
         if (player != null && sectionStartPositions != null && currentSection < sectionStartPositions.Length)
         {
             Debug.Log("Restarting section " + currentSection);
@@ -95,5 +108,17 @@ public class GameManager : MonoBehaviour
     public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void BlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

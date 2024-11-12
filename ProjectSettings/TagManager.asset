@@ -18,6 +18,7 @@ TagManager:
   - MRUA
   - Next
   - MRUUI
+  - Parabola
   layers:
   - Default
   - TransparentFX

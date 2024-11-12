@@ -13,16 +13,13 @@ public class GameOverTrigger : MonoBehaviour
         {
             mruUI = mruUIObject.GetComponent<MRUUI>();
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (mruUI != null)
-            {
-                mruUI.StopCalculations(); // Detiene el cálculo de MRU
-            }
 
             GameManager.Instance.RestartSection();
         }

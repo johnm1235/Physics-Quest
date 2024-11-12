@@ -140,7 +140,6 @@ namespace StatePattern
                 playerIsDead = false;
             }
         }
-
         private void CalculateVertical()
         {
             if (isGrounded)
