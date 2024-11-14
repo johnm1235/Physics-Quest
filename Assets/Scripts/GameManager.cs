@@ -39,10 +39,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) )
+        if (Input.GetKeyDown(KeyCode.R))
         {
             RestartSection();
         }
+
     }
 
     // Reiniciar la sección actual
@@ -57,19 +58,19 @@ public class GameManager : MonoBehaviour
             CharacterController charController = player.GetComponent<CharacterController>();
             if (charController != null)
             {
-                charController.enabled = false;  
+                charController.enabled = false;
             }
 
             player.transform.position = sectionStartPositions[currentSection].position;
 
             if (charController != null)
             {
-                charController.enabled = true;  
+                charController.enabled = true;
             }
 
-            
 
-            Time.timeScale = 1f;  
+
+            Time.timeScale = 1f;
         }
         else
         {
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
     // Mostrar mensaje de derrota
     public void ShowDefeatMessage()
     {
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
 
     }
 
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentSection < sectionStartPositions.Length - 1)
         {
-            currentSection++;  
+            currentSection++;
             Debug.Log("Now in section " + currentSection);
         }
         else
@@ -102,7 +103,7 @@ public class GameManager : MonoBehaviour
 
     public void CompleteSection()
     {
-        AdvanceToNextSection();  
+        AdvanceToNextSection();
     }
 
     public void NextLevel()
@@ -120,5 +121,18 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+    }
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+    }
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class KnowledgeItem : MonoBehaviour
 {
     [SerializeField] private string knowledgeTitle;
-    [TextArea][SerializeField] private string knowledgeContent;
+    [SerializeField] private Sprite knowledgeContent; // Asegúrate de que esté marcado como [SerializeField]
 
     public string Title => knowledgeTitle;
-    public string Content => knowledgeContent;
+    public Sprite Content => knowledgeContent;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,4 +29,3 @@ public class KnowledgeItem : MonoBehaviour
         // Instantiate(particleEffectPrefab, transform.position, Quaternion.identity);
     }
 }
-

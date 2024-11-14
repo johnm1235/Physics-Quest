@@ -1,3 +1,4 @@
+using StatePattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,16 @@ public class Parabola : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera secondaryCamera;
+    [SerializeField] private PlayerController playerController;
+
+
+
 
     public void Awake()
     {
         mainCamera.enabled = true;
         secondaryCamera.enabled = false;
+        playerController.enabled = true;
     }
 
     public void Start()
@@ -35,11 +41,18 @@ public class Parabola : MonoBehaviour
         GameManager.Instance.UnlockCursor();
     }
 
+    public void ActivatePlayerController()
+    {
+        playerController.enabled = true;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             ActivateSecondaryCamera();
+            playerController.enabled = false;
         }
     }
 
@@ -48,6 +61,7 @@ public class Parabola : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             ActivateMainCamera();
+            playerController.enabled = true;
         }
     }
 }

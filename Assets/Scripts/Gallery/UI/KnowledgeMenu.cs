@@ -9,7 +9,7 @@ public class KnowledgeMenu : MonoBehaviour
     [SerializeField] private GameObject knowledgeEntryPrefab; // Prefab de la entrada de conocimiento
     [SerializeField] private Transform contentParent; // Contenedor donde se colocarán las entradas
     [SerializeField] private GameObject detailPanel; // Panel de detalles
-    [SerializeField] private TextMeshProUGUI detailText; // Texto para mostrar el contenido
+    [SerializeField] private Image detailImage; // Imagen para mostrar el contenido
     [SerializeField] private Button closeButton; // Botón para cerrar el panel
 
     private void OnEnable()
@@ -20,10 +20,13 @@ public class KnowledgeMenu : MonoBehaviour
 
     private void PopulateMenu()
     {
-        // Borra entradas previas
+        // Borra entradas previas, pero no destruyas el detailPanel ni sus componentes
         foreach (Transform child in contentParent)
         {
-            Destroy(child.gameObject);
+            if (child.gameObject != detailPanel)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         // Recorre todas las entradas de conocimiento y las agrega al menú
@@ -44,10 +47,11 @@ public class KnowledgeMenu : MonoBehaviour
         }
     }
 
-    private void ShowKnowledgeContent(string content)
+
+    public void ShowKnowledgeContent(Sprite content)
     {
-        // Muestra el panel de detalles y establece el texto
-        detailText.text = content;
+        // Muestra el panel de detalles y establece la imagen
+        detailImage.sprite = content;
         detailPanel.SetActive(true); // Activa el panel de detalles
     }
 
@@ -56,5 +60,3 @@ public class KnowledgeMenu : MonoBehaviour
         detailPanel.SetActive(false); // Desactiva el panel de detalles
     }
 }
-
-

@@ -24,7 +24,7 @@ public class KnowledgeManager : MonoBehaviour
         }
     }
 
-    public void AddKnowledge(string title, string content)
+    public void AddKnowledge(string title, Sprite content)
     {
         if (knowledgeEntries.Count < maxEnergyPerLevel) // Verifica si no se ha alcanzado el máximo
         {
@@ -48,9 +48,9 @@ public class KnowledgeManager : MonoBehaviour
 public class KnowledgeEntry
 {
     public string Title;
-    public string Content;
+    public Sprite Content;
 
-    public KnowledgeEntry(string title, string content)
+    public KnowledgeEntry(string title, Sprite content)
     {
         Title = title;
         Content = content;
