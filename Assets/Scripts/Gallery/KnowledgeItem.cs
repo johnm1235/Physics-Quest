@@ -17,6 +17,7 @@ public class KnowledgeItem : MonoBehaviour
             // Agrega el conocimiento al inventario del jugador
             KnowledgeManager.Instance.AddKnowledge(knowledgeTitle, knowledgeContent);
             // Muestra un efecto de partículas al recogerlo
+            FindObjectOfType<LevelOneManager>().PlayItemPickupSound();
             ShowCollectionEffect();
             // Destruye el objeto
             Destroy(gameObject);
