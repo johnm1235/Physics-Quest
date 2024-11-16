@@ -8,6 +8,8 @@ public class Parabola : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera secondaryCamera;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private Projectile projectile;
+
 
 
 
@@ -17,6 +19,9 @@ public class Parabola : MonoBehaviour
         mainCamera.enabled = true;
         secondaryCamera.enabled = false;
         playerController.enabled = true;
+        projectile.enabled = false;
+
+
     }
 
     public void Start()
@@ -26,18 +31,24 @@ public class Parabola : MonoBehaviour
             Debug.LogError("Main camera is not assigned.");
         }
         GameManager.Instance.BlockCursor();
+        projectile.enabled = false;
+
     }
 
     public void ActivateMainCamera()
     {
         mainCamera.enabled = true;
         secondaryCamera.enabled = false;
+        projectile.enabled = false;
+
+
     }
 
     public void ActivateSecondaryCamera()
     {
         mainCamera.enabled = false;
         secondaryCamera.enabled = true;
+        projectile.enabled = true;
         GameManager.Instance.UnlockCursor();
     }
 

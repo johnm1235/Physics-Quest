@@ -24,6 +24,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private TextMeshProUGUI calculationsText;
     [SerializeField] private TextMeshProUGUI formulasText; // Nuevo campo para el texto de las fórmulas
 
+   
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
