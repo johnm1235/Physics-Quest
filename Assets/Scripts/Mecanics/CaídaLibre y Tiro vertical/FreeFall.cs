@@ -21,7 +21,7 @@ public class FreeFall : MonoBehaviour
     private float initialHeight = 0;     // Altura inicial desde la que cae la esfera
     private float elapsedTime = 0;       // Tiempo que transcurre desde el inicio de la caída
     private bool isFalling = false;      // Indica si la esfera está en caída libre
-    private float sliderStep = 0.001f;    // Incremento para ajustar el tiempo en el slider
+    private float sliderStep = 0.005f;    // Incremento para ajustar el tiempo en el slider
     private float tolerance = 0.5f;      // Tolerancia para el rango de la posición
 
     private void Awake()
@@ -72,6 +72,7 @@ public class FreeFall : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) && !isFalling)
         {
             StartFreeFall();
+            playerController.moveSpeed = 0;
         }
 
         // Muestra el resultado final si la bola alcanza la plataforma inferior
@@ -79,6 +80,7 @@ public class FreeFall : MonoBehaviour
         {
             isFalling = false;
             CheckLanding();
+            playerController.moveSpeed = 5;
         }
 
         // Avanzar a la siguiente sección si se presiona el botón de confirmación
@@ -143,11 +145,12 @@ public class FreeFall : MonoBehaviour
         elapsedTime = 0;
         isFalling = true;
         platformToRemove.SetActive(false);  // Desactiva la plataforma para iniciar la caída
-        playerController.enabled = false;   // Desactiva el control del jugador durante la caída
+      //  playerController.enabled = false;   // Desactiva el control del jugador durante la caída
     }
 
     private void ResetValues()
     {
+        playerController.moveSpeed = 5;
         timeSlider.value = 0;
         elapsedTime = 0;
         isFalling = false;

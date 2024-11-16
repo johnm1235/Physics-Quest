@@ -24,8 +24,6 @@ public class Projectile : MonoBehaviour
     [SerializeField] private TextMeshProUGUI calculationsText;
     [SerializeField] private TextMeshProUGUI formulasText; // Nuevo campo para el texto de las fórmulas
 
-   
-
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -41,7 +39,6 @@ public class Projectile : MonoBehaviour
         angleSlider.onValueChanged.AddListener(delegate { OnSliderValueChanged(); });
     }
 
-
     private void Update()
     {
         // Actualiza la velocidad y el ángulo con los valores de los sliders
@@ -54,7 +51,7 @@ public class Projectile : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(Coroutine_Movement(_initialVelocity, angle)); // Pasa el ángulo en radianes
-            ShowCalculations(_initialVelocity, angle); 
+            ShowCalculations(_initialVelocity, angle);
         }
 
         ShowFormulas(); // Llama al método para mostrar las fórmulas
@@ -66,7 +63,6 @@ public class Projectile : MonoBehaviour
         float angle = _angle * Mathf.Deg2Rad;
         ShowCalculations(_initialVelocity, angle);
     }
-
 
     private void DrawPath(float v0, float angle, float step)
     {
@@ -115,6 +111,15 @@ public class Projectile : MonoBehaviour
                 break;
             }
 
+
+            if (transform.position.y < -10f || transform.position.y > 20f) 
+            {
+                Debug.Log("El proyectil ha caído al vacío. Reiniciando sección...");
+                GameManager.Instance.RestartSection();
+                GameManager.Instance.BlockCursor();
+                break;
+            }
+
             yield return null;
         }
     }
@@ -129,7 +134,6 @@ public class Projectile : MonoBehaviour
                               $"Gravedad: {-Physics.gravity.y:F2} m/s²";
         calculationsText.text = calculations;
     }
-
 
     private void ShowFormulas()
     {

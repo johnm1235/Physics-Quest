@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameOverTrigger : MonoBehaviour
 {
     private MRUUI mruUI;
+    private MRUA mrua;
 
     private void Start()
     {
@@ -13,6 +14,7 @@ public class GameOverTrigger : MonoBehaviour
         {
             mruUI = mruUIObject.GetComponent<MRUUI>();
         }
+
 
     }
 

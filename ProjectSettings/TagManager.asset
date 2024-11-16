@@ -19,6 +19,7 @@ TagManager:
   - Next
   - MRUUI
   - Parabola
+  - GameOver
   layers:
   - Default
   - TransparentFX

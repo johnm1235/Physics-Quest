@@ -20,7 +20,7 @@ public class MRUA : MonoBehaviour
 
     private float initialSpeed;
     public float elapsedTime = 2;
-    private float sliderStep = 0.01f;
+    private float sliderStep = 0.05f;
 
     private void Awake()
     {
@@ -33,6 +33,7 @@ public class MRUA : MonoBehaviour
         accelerationSlider.value = playerController.acceleration;
         formulaMRUA.text = "V = V0 + a * t";
         ResetValues();
+        
     }
 
     public void Update()
@@ -80,6 +81,7 @@ public class MRUA : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+         //   GameManager.Instance.UnlockCursor();
             this.enabled = true;
             accelerationSlider.onValueChanged.AddListener(UpdateAcceleration);
             
@@ -90,10 +92,21 @@ public class MRUA : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+          //  GameManager.Instance.BlockCursor();
+            Debug.Log("Player has exited the MRUA section");
             accelerationSlider.onValueChanged.RemoveListener(UpdateAcceleration);
             playerController.acceleration = 20;
             playerController.moveSpeed = 5;
             this.enabled = false;
         }
     }
+
+    public void ResetPlayerValues()
+    {
+        playerController.acceleration = 20;
+        playerController.moveSpeed = 5; // Valor de velocidad normal
+        accelerationSlider.value = 0;
+        initialSpeed = 0;
+    }
+
 }
