@@ -1,4 +1,5 @@
 using StatePattern;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,24 +10,24 @@ public class FreeFall : MonoBehaviour
     public PlayerInput input;
 
     [Header("Free Fall Settings")]
-    [SerializeField] private TextMeshProUGUI positionText;  // Muestra la posición en el eje Y
-    [SerializeField] private TextMeshProUGUI formulaText;   // Muestra la fórmula usada
-    [SerializeField] private Slider timeSlider;             // Slider para ajustar el tiempo estimado de caída
-    [SerializeField] private ButtonCheck buttonCheck;       // Botón para confirmar la estimación
-    [SerializeField] private Transform lowerPlatform;       // Plataforma de destino
-    [SerializeField] private Transform upperPlatform;       // Plataforma de inicio
-    [SerializeField] private GameObject platformToRemove;   // Plataforma que desaparece al iniciar la caída
+    [SerializeField] private TextMeshProUGUI positionText; 
+    [SerializeField] private TextMeshProUGUI formulaText;   
+    [SerializeField] private Slider timeSlider;             
+    [SerializeField] private ButtonCheck buttonCheck;       
+    [SerializeField] private Transform lowerPlatform;       
+    [SerializeField] private Transform upperPlatform;      
+    [SerializeField] private GameObject platformToRemove;  
 
-    private float gravity = 9.81f;       // Valor de la gravedad
-    private float initialHeight = 0;     // Altura inicial desde la que cae la esfera
-    private float elapsedTime = 0;       // Tiempo que transcurre desde el inicio de la caída
-    private bool isFalling = false;      // Indica si la esfera está en caída libre
-    private float sliderStep = 0.005f;    // Incremento para ajustar el tiempo en el slider
-    private float tolerance = 0.5f;      // Tolerancia para el rango de la posición
+    private float gravity = 9.81f;      
+    private float initialHeight = 0;     
+    private float elapsedTime = 0;       
+    private bool isFalling = false;      
+    private float sliderStep = 0.005f;    
+    private float tolerance = 0.5f;      
 
     private void Awake()
     {
-        this.enabled = false;  // Desactiva el script inicialmente
+        this.enabled = false;  
     }
 
     private void Start()
@@ -72,7 +73,7 @@ public class FreeFall : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) && !isFalling)
         {
             StartFreeFall();
-            playerController.moveSpeed = 0;
+            
         }
 
         // Muestra el resultado final si la bola alcanza la plataforma inferior
@@ -83,14 +84,14 @@ public class FreeFall : MonoBehaviour
             playerController.moveSpeed = 5;
         }
 
-        // Avanzar a la siguiente sección si se presiona el botón de confirmación
         if (buttonCheck.button)
         {
-            // positionText.color = Color.green;
-            Debug.Log("¡Correcto!");
-            GameManager.Instance.CompleteSection();
+            GameManager.Instance.AdvanceToNextSection();
         }
+
     }
+
+
 
     private float CalculateFreeFallPosition(float time)
     {
@@ -113,8 +114,11 @@ public class FreeFall : MonoBehaviour
             positionText.color = Color.red;
         }
 
+        // Asegúrate de restaurar la velocidad y reactivar el control del jugador
+        playerController.moveSpeed = 5;
         playerController.enabled = true;
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -122,6 +126,7 @@ public class FreeFall : MonoBehaviour
         {
             this.enabled = true;
             timeSlider.onValueChanged.AddListener(UpdateElapsedTime);
+            
         }
     }
 
@@ -145,7 +150,20 @@ public class FreeFall : MonoBehaviour
         elapsedTime = 0;
         isFalling = true;
         platformToRemove.SetActive(false);  // Desactiva la plataforma para iniciar la caída
-      //  playerController.enabled = false;   // Desactiva el control del jugador durante la caída
+        playerController.moveSpeed = 0;
+        StartCoroutine(FreeFallCoroutine());
+    }
+
+    private IEnumerator FreeFallCoroutine()
+    {
+        // Calcula el tiempo de caída usando la fórmula t = sqrt(2 * h / g)
+        float fallTime = Mathf.Sqrt(2 * initialHeight / gravity);
+        yield return new WaitForSeconds(fallTime);
+
+        // Una vez que el tiempo de caída ha pasado, restaura la velocidad del jugador
+        playerController.moveSpeed = 5;
+        isFalling = false;
+        CheckLanding();
     }
 
     private void ResetValues()

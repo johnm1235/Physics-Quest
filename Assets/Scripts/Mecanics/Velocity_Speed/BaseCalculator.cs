@@ -82,8 +82,8 @@ public abstract class BaseCalculator : MonoBehaviour
         int rapidityInt = Mathf.FloorToInt(rapidity);
         int totalDistanceInt = Mathf.FloorToInt(totalDistance);
 
-        speedText.text = $"{speed:F2}m/s = {netDisplacement:F2}m / {timeElapsed:F2}s";
-        rapidityText.text = $"{rapidity:F2}m/s = {totalDistance:F2}m / {timeElapsed:F2}s";
+        speedText.text = $"{speed:F2} m/s = {netDisplacement:F2} m / {timeElapsed:F2} s";
+        rapidityText.text = $"{rapidity:F2} m/s = {totalDistance:F2} m / {timeElapsed:F2} s";
     }
 
 

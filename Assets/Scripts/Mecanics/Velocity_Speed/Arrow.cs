@@ -10,6 +10,11 @@ public class Arrow : MonoBehaviour
     private Color originalColor; 
     private Renderer arrowRenderer;
     private Quaternion originalRotation; 
+    
+    [SerializeField] AudioClip arrowSound;
+
+
+
 
     private void Start()
     {
@@ -55,7 +60,16 @@ public class Arrow : MonoBehaviour
 
     public void ChangeColor(Color color)
     {
+        AudioManager.Instance.PlaySFX(arrowSound);
         arrowRenderer.material.color = color;
+        foreach (Transform child in transform)
+        {
+            Renderer childRenderer = child.GetComponent<Renderer>();
+            if (childRenderer != null)
+            {
+                childRenderer.material.color = color;
+            }
+        }
     }
 
     public void ChangeDirection()
@@ -80,8 +94,18 @@ public class Arrow : MonoBehaviour
 
     public void ResetColor()
     {
+        
         arrowRenderer.material.color = originalColor;
+        foreach (Transform child in transform)
+        {
+            Renderer childRenderer = child.GetComponent<Renderer>();
+            if (childRenderer != null)
+            {
+                childRenderer.material.color = originalColor;
+            }
+        }
     }
+
 
 
     public void ResetArrow()

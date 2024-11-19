@@ -42,7 +42,7 @@ public class MRUUI : MonoBehaviour
             float tiempoTranscurrido = Time.time - tiempoInicio;
             float posicionCalculada = posicionInicial + speedMRU * tiempoTranscurrido;
 
-            calcText.text = $"{posicionCalculada:F2}m = {posicionInicial}m + {speedMRU}m/s * {tiempoTranscurrido:F2}s";
+            calcText.text = $"{posicionCalculada:F2} m = {posicionInicial} m + {speedMRU} m/s * {tiempoTranscurrido:F2} s";
             formulatext.text = $"X = x0 + v * t";
             posFinalText.text = $"Posición Final: {posFinal:F2}";
 
@@ -81,7 +81,7 @@ public class MRUUI : MonoBehaviour
 
     private void UpdateFormulaText()
     {
-        calcText.text = $"X = {posicionInicial:F2}m + {speedMRU:F2}m/s * {0,00:F2}s";
+        calcText.text = $"X = {posicionInicial:F2} m + {speedMRU:F2} m/s * {0,00:F2} s";
         posFinalText.text = $"Posición Final: {posFinal:F2}";
     }
 

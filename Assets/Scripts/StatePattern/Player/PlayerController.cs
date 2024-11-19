@@ -32,6 +32,7 @@ namespace StatePattern
         [SerializeField] private float groundedOffset = 0.15f;
         [SerializeField] private LayerMask groundLayers;
 
+        [SerializeField] private Transform sphere;
         private Animator anim;
 
         public CharacterController CharController => charController;
@@ -110,14 +111,24 @@ namespace StatePattern
                 targetSpeed = currentMoveSpeed;
             }
 
-            charController.Move((inputVector.normalized * targetSpeed * Time.deltaTime) + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
+            // Movimiento del CharacterController
+            Vector3 moveDirection = inputVector.normalized * targetSpeed * Time.deltaTime;
+            charController.Move(moveDirection + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
 
+            // Rotación del jugador (esfera)
             if (inputVector != Vector3.zero)
             {
+                // Rotar el personaje hacia la dirección del movimiento
                 Quaternion targetRotation = Quaternion.LookRotation(inputVector);
                 player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
+
+                // Rotar la esfera (hijo) para simular el rodamiento
+                Vector3 rotationAxis = Vector3.Cross(Vector3.up, inputVector.normalized); // Eje perpendicular
+                float rotationAmount = targetSpeed * Time.deltaTime * 360f / (2f * Mathf.PI * sphere.localScale.x); // Calcula rotación
+                sphere.Rotate(rotationAxis, rotationAmount, Space.World);
             }
         }
+
 
         private void MRU(float currentHorizontalSpeed)
         {

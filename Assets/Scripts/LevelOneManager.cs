@@ -6,7 +6,8 @@ public class LevelOneManager : MonoBehaviour
 {
     [SerializeField] private AudioClip levelMusic;   
     [SerializeField] private AudioClip itemPickupSFX;
-    [SerializeField] private AudioClip energyChargeSFX; 
+    [SerializeField] private AudioClip energyChargeSFX;
+    [SerializeField] private AudioClip speedArrowSFX;
 
     private void Start()
     {
@@ -24,5 +25,11 @@ public class LevelOneManager : MonoBehaviour
     {
 
         AudioManager.Instance.PlaySFX(energyChargeSFX);
+    }
+
+    public void PlaySpeedArrow()
+    {
+
+        AudioManager.Instance.PlaySFX(speedArrowSFX);
     }
 }
