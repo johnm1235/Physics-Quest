@@ -35,6 +35,8 @@ namespace StatePattern
         [SerializeField] private Transform sphere;
         private Animator anim;
 
+        [SerializeField] Vector3 horizontalVelocity;
+
         public CharacterController CharController => charController;
         public bool IsGrounded => isGrounded;
         public StateMachine PlayerStateMachine => playerStateMachine;
@@ -86,48 +88,48 @@ namespace StatePattern
         {
             Vector3 inputVector = playerInput.InputVector;
 
-            if (inputVector == Vector3.zero)
-            {
-                targetSpeed = 0;
-            }
-
-            // Determinar la velocidad actual
+            // Determinar la velocidad actual en función de si el jugador está en el suelo
             float currentMoveSpeed = (playerInput.IsRunning && playerLevel >= 2) ? moveSpeed * runMultiplier : moveSpeed;
-            float currentHorizontalSpeed = new Vector3(charController.velocity.x, 0.0f, charController.velocity.z).magnitude;
-            float tolerance = 0.1f;
 
-            if (sectionMRU)
+            if (isGrounded)
             {
-                MRU(currentHorizontalSpeed);
-            }
-
-            if (currentHorizontalSpeed < currentMoveSpeed - tolerance || currentHorizontalSpeed > currentMoveSpeed + tolerance)
-            {
-                targetSpeed = Mathf.Lerp(currentHorizontalSpeed, currentMoveSpeed, Time.deltaTime * acceleration);
-                targetSpeed = Mathf.Round(targetSpeed * 1000f) / 1000f;
+                // Movimiento en el suelo: actualiza la velocidad horizontal según la entrada del jugador
+                if (inputVector != Vector3.zero)
+                {
+                    horizontalVelocity = inputVector.normalized * currentMoveSpeed;
+                }
+                else
+                {
+                    horizontalVelocity = Vector3.zero; // Detenerse si no hay entrada
+                }
             }
             else
             {
-                targetSpeed = currentMoveSpeed;
+                // En el aire: mantener la velocidad horizontal actual
+                if (inputVector != Vector3.zero)
+                {
+                    // Permitir ajuste menor en el aire según la entrada
+                    Vector3 airControl = inputVector.normalized * (currentMoveSpeed * 0.5f);
+                    horizontalVelocity = Vector3.Lerp(horizontalVelocity, airControl, Time.deltaTime * 2f);
+                }
             }
 
-            // Movimiento del CharacterController
-            Vector3 moveDirection = inputVector.normalized * targetSpeed * Time.deltaTime;
-            charController.Move(moveDirection + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
+            // Movimiento final del CharacterController
+            Vector3 moveDirection = (horizontalVelocity * Time.deltaTime) + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime;
+            charController.Move(moveDirection);
 
-            // Rotación del jugador (esfera)
+            // Rotación del jugador y de la esfera
             if (inputVector != Vector3.zero)
             {
-                // Rotar el personaje hacia la dirección del movimiento
                 Quaternion targetRotation = Quaternion.LookRotation(inputVector);
                 player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
 
-                // Rotar la esfera (hijo) para simular el rodamiento
-                Vector3 rotationAxis = Vector3.Cross(Vector3.up, inputVector.normalized); // Eje perpendicular
-                float rotationAmount = targetSpeed * Time.deltaTime * 360f / (2f * Mathf.PI * sphere.localScale.x); // Calcula rotación
+                Vector3 rotationAxis = Vector3.Cross(Vector3.up, inputVector.normalized);
+                float rotationAmount = currentMoveSpeed * Time.deltaTime * 360f / (2f * Mathf.PI * sphere.localScale.x);
                 sphere.Rotate(rotationAxis, rotationAmount, Space.World);
             }
         }
+
 
 
         private void MRU(float currentHorizontalSpeed)
@@ -178,10 +180,10 @@ namespace StatePattern
 
             verticalVelocity += gravity * Time.deltaTime;
 
-            // check if grounded
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z);
-            isGrounded = Physics.CheckSphere(spherePosition, 0.5f, groundLayers, QueryTriggerInteraction.Ignore);
+            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
         }
+
 
         private void OnDrawGizmosSelected()
         {

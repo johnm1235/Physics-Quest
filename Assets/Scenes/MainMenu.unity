@@ -1409,7 +1409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuMusic: {fileID: 8300000, guid: 68b720d9717efec42a877d58d012562c, type: 3}
-  buttonClickSound: {fileID: 8300000, guid: 9b2b650ca0e5f7340abde6b38d3acb49, type: 3}
+  buttonClickSound: {fileID: 8300000, guid: 4e361b3cb15842944947f6f6d3eb14d0, type: 3}
   optionsMenu: {fileID: 617295981}
 --- !u!1 &886411996
 GameObject:

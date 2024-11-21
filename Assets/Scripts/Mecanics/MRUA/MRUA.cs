@@ -22,6 +22,8 @@ public class MRUA : MonoBehaviour
     public float elapsedTime = 2;
     private float sliderStep = 0.05f;
 
+
+    public bool resetIndex = false;
     private void Awake()
     {
         this.enabled = false;
@@ -51,7 +53,7 @@ public class MRUA : MonoBehaviour
         float currentSpeed = initialSpeed + playerController.acceleration * elapsedTime;
         playerController.moveSpeed = currentSpeed;
 
-        speedMRUA.text = $"{currentSpeed:F2}m/s = {initialSpeed}m/s + {playerController.acceleration:F2}m/s² * {elapsedTime}s";
+        speedMRUA.text = $"{currentSpeed:F2} m/s = {initialSpeed} m/s + {playerController.acceleration:F2} m/s² * {elapsedTime} s";
 
         if (buttonCheck.button && !hasAdvancedToNextSection)
         {
@@ -75,6 +77,7 @@ public class MRUA : MonoBehaviour
         playerController.acceleration = 0;
         accelerationSlider.value = 0;
         initialSpeed = 0;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -104,9 +107,10 @@ public class MRUA : MonoBehaviour
     public void ResetPlayerValues()
     {
         playerController.acceleration = 20;
-        playerController.moveSpeed = 5; // Valor de velocidad normal
+        playerController.moveSpeed = 5; 
         accelerationSlider.value = 0;
         initialSpeed = 0;
+        resetIndex = true;
     }
 
 }
