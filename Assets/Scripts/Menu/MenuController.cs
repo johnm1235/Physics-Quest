@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviour
 
     public void OnIniciarButton()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("IntroScene");
     }
 
     public void OnControlesButton()

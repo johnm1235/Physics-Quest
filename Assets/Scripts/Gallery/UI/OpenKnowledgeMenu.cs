@@ -8,6 +8,8 @@ public class OpenKnowledgeMenu : MonoBehaviour
     [SerializeField] private GameObject knowledgeMenu;
     [SerializeField] private PlayerInput playerInput;
 
+    [SerializeField] private AudioClip buttonClickSound;
+
     private void Update()
     {
         if (playerInput.IsMenuOpen)
@@ -17,10 +19,12 @@ public class OpenKnowledgeMenu : MonoBehaviour
 
             if (isActive)
             {
+                AudioManager.Instance.PlaySFX(buttonClickSound);
                 GameManager.Instance.UnlockCursor();
             }
             else
             {
+                AudioManager.Instance.PlaySFX(buttonClickSound);
                 GameManager.Instance.BlockCursor();
             }
         }

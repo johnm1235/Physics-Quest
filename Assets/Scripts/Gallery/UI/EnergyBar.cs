@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class EnergyBar : MonoBehaviour
 {
     [SerializeField] private Slider energySlider;
+    [SerializeField] private List<Image> collectedItemImages; // Lista de imágenes para los objetos recolectados
+    [SerializeField] private List<Sprite> itemSprites; // Lista de sprites para los objetos recolectados
     private int maxEnergyPerLevel;
     private int currentKnowledgeCount;
     [SerializeField] private float fillSpeed = 0.5f; // Velocidad de llenado del slider
@@ -17,6 +19,12 @@ public class EnergyBar : MonoBehaviour
         currentKnowledgeCount = 0;
         energySlider.value = currentKnowledgeCount;
         energySlider.interactable = false;
+
+        // Inicializa las imágenes de los objetos recolectados
+        foreach (var image in collectedItemImages)
+        {
+            image.enabled = false;
+        }
     }
 
     public void UpdateEnergyBar()
@@ -24,8 +32,8 @@ public class EnergyBar : MonoBehaviour
         if (currentKnowledgeCount < maxEnergyPerLevel)
         {
             currentKnowledgeCount++;
-        //    FindObjectOfType<LevelOneManager>().PlayEnergyBar();
             StartCoroutine(FillSlider(energySlider.value, currentKnowledgeCount));
+            UpdateCollectedItemImage(currentKnowledgeCount - 1);
             Debug.Log("Knowledge collected! Current energy: " + currentKnowledgeCount);
         }
         else
@@ -46,9 +54,24 @@ public class EnergyBar : MonoBehaviour
         energySlider.value = endValue;
     }
 
+    private void UpdateCollectedItemImage(int index)
+    {
+        if (index < collectedItemImages.Count && index < itemSprites.Count)
+        {
+            collectedItemImages[index].sprite = itemSprites[index];
+            collectedItemImages[index].enabled = true;
+        }
+    }
+
     public void ResetEnergy()
     {
         currentKnowledgeCount = 0;
         energySlider.value = 0;
+
+        // Reinicia las imágenes de los objetos recolectados
+        foreach (var image in collectedItemImages)
+        {
+            image.enabled = false;
+        }
     }
 }

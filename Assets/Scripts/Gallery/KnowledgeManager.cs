@@ -11,6 +11,14 @@ public class KnowledgeManager : MonoBehaviour
     [SerializeField] private int maxEnergyPerLevel = 10;
     public int MaxEnergyPerLevel => maxEnergyPerLevel;
 
+    // Referencia al objeto que deseas activar/desactivar
+    [SerializeField] private GameObject barrera1;
+    [SerializeField] private GameObject barrera2;
+    [SerializeField] private GameObject barrera3;
+    [SerializeField] private GameObject barrera4;
+    [SerializeField] private GameObject barrera5;
+    [SerializeField] private GameObject barrera6;
+
     private void Awake()
     {
         if (Instance == null)
@@ -31,6 +39,32 @@ public class KnowledgeManager : MonoBehaviour
             knowledgeEntries.Add(new KnowledgeEntry(title, content));
             // Llama a EnergyBar para actualizar
             FindObjectOfType<EnergyBar>().UpdateEnergyBar();
+
+            // Lógica para activar/desactivar el objeto basado en el título
+            if (title == "Velocidad")
+            {
+                barrera1.SetActive(false);
+            }
+            if (title == "Rapidez")
+            {
+                barrera2.SetActive(false);
+            }
+            if (title == "MRU")
+            {
+                barrera3.SetActive(false);
+            }
+            if (title == "MRUA")
+            {
+                barrera4.SetActive(false);
+            }
+            if (title == "Caída Libre")
+            {
+                barrera5.SetActive(false);
+            }
+            if (title == "Movimiento parabólico")
+            {
+                barrera6.SetActive(false);
+            }
         }
         else
         {
@@ -56,4 +90,3 @@ public class KnowledgeEntry
         Content = content;
     }
 }
-

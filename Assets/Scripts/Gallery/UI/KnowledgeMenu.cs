@@ -11,6 +11,7 @@ public class KnowledgeMenu : MonoBehaviour
     [SerializeField] private GameObject detailPanel; // Panel de detalles
     [SerializeField] private Image detailImage; // Imagen para mostrar el contenido
     [SerializeField] private Button closeButton; // Botón para cerrar el panel
+    [SerializeField] private AudioClip buttonClickSound; // Sonido al hacer clic
 
     private void OnEnable()
     {
@@ -57,6 +58,7 @@ public class KnowledgeMenu : MonoBehaviour
 
     private void CloseDetailPanel()
     {
+        AudioManager.Instance.PlaySFX(buttonClickSound);
         detailPanel.SetActive(false); // Desactiva el panel de detalles
     }
 }
