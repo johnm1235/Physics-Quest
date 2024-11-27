@@ -68,7 +68,7 @@ public class EnergyBar : MonoBehaviour
         currentKnowledgeCount = 0;
         energySlider.value = 0;
 
-        // Reinicia las imágenes de los objetos recolectados
+
         foreach (var image in collectedItemImages)
         {
             image.enabled = false;

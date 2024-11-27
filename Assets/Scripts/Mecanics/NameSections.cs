@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NameSections : MonoBehaviour
 {
-    // Referencia al Canvas que deseas activar/desactivar
+
     [SerializeField] private Canvas canvasParaActivar;
 
     private void OnTriggerEnter(Collider other)

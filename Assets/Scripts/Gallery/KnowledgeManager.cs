@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KnowledgeManager : MonoBehaviour
 {
@@ -30,6 +31,24 @@ public class KnowledgeManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Reasignar las referencias de las barreras
+        barrera1 = GameObject.FindWithTag("Barrera1");
+        barrera2 = GameObject.FindWithTag("Barrera2");
+        barrera3 = GameObject.FindWithTag("Barrera3");
+        barrera4 = GameObject.FindWithTag("Barrera4");
+        barrera5 = GameObject.FindWithTag("Barrera5");
+        barrera6 = GameObject.FindWithTag("Barrera6");
     }
 
     public void AddKnowledge(string title, Sprite content)
@@ -75,6 +94,18 @@ public class KnowledgeManager : MonoBehaviour
     public List<KnowledgeEntry> GetAllKnowledge()
     {
         return knowledgeEntries;
+    }
+
+    public void ResetKnowledge()
+    {
+        knowledgeEntries.Clear();
+
+        if (barrera1 != null) barrera1.SetActive(true);
+        if (barrera2 != null) barrera2.SetActive(true);
+        if (barrera3 != null) barrera3.SetActive(true);
+        if (barrera4 != null) barrera4.SetActive(true);
+        if (barrera5 != null) barrera5.SetActive(true);
+        if (barrera6 != null) barrera6.SetActive(true);
     }
 }
 

@@ -16,10 +16,14 @@ public class IntroController : MonoBehaviour
 
     private void OnVideoEnd(VideoPlayer vp)
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(1);
     }
     public void Skip()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(1);
     }
 }

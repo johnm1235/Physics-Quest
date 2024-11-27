@@ -20,6 +20,18 @@ TagManager:
   - MRUUI
   - Parabola
   - GameOver
+  - Pos1
+  - Pos2
+  - Pos3
+  - Pos4
+  - Pos5
+  - SecondaryCamera
+  - Barrera1
+  - Barrera2
+  - Barrera3
+  - Barrera4
+  - Barrera5
+  - Barrera6
   layers:
   - Default
   - TransparentFX
