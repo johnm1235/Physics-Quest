@@ -22,10 +22,16 @@ public class Inercia : MonoBehaviour
     private bool enImpulso = false;
     private float tiempoUltimoImpulso;
     private float tiempoCargandoImpulso = 0f;
+    private bool barraAlMaximo = false;
+    private Coroutine esperaCoroutine;
+    private PlayerMovement playerMovement;
+    private Animator animator; // Referencia al Animator
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerMovement = GetComponent<PlayerMovement>();
+        animator = GetComponent<Animator>(); // Obtener el componente Animator
         SetImpulsoUIActive(false);
         aceleracionImpulsoText.gameObject.SetActive(false);
     }
@@ -41,15 +47,37 @@ public class Inercia : MonoBehaviour
         {
             SetImpulsoUIActive(true);
             tiempoCargandoImpulso = 0f;
+            barraAlMaximo = false;
         }
 
         if (Input.GetKey(KeyCode.LeftShift) && CanActivateImpulso())
         {
             tiempoCargandoImpulso += Time.deltaTime;
             UpdateImpulsoUI();
+
+            if (tiempoCargandoImpulso >= tiempoCargaBarra && !barraAlMaximo)
+            {
+                barraAlMaximo = true;
+                esperaCoroutine = StartCoroutine(EsperarYActivarImpulso());
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift) && CanActivateImpulso())
+        {
+            if (esperaCoroutine != null)
+            {
+                StopCoroutine(esperaCoroutine);
+                esperaCoroutine = null;
+            }
+            StartCoroutine(ActivarImpulso());
+            SetImpulsoUIActive(false);
+        }
+    }
+
+    private IEnumerator EsperarYActivarImpulso()
+    {
+        yield return new WaitForSeconds(2f); // Esperar 2 segundos si la barra está al máximo
+        if (Input.GetKey(KeyCode.LeftShift)) // Verificar si el jugador sigue presionando el botón
         {
             StartCoroutine(ActivarImpulso());
             SetImpulsoUIActive(false);
@@ -82,6 +110,18 @@ public class Inercia : MonoBehaviour
         float fuerzaActualImpulso = Mathf.Lerp(0, fuerzaMaximaImpulso, Mathf.Clamp01(tiempoCargandoImpulso / tiempoCargaBarra));
         float aceleracion = fuerzaActualImpulso / rb.mass;
 
+        // Desactivar el movimiento del jugador
+        if (playerMovement != null)
+        {
+            playerMovement.DisableMovement(0.2f); // Desactivar el movimiento por un corto tiempo
+        }
+
+        // Activar la animación de impulso
+        if (animator != null)
+        {
+            animator.SetTrigger("Impulso");
+        }
+
         rb.AddForce(transform.forward * fuerzaActualImpulso, ForceMode.Impulse);
 
         yield return new WaitForSeconds(0.1f); // Espera un corto tiempo para aplicar la fuerza
@@ -101,15 +141,14 @@ public class Inercia : MonoBehaviour
     {
         if (enImpulso)
         {
-            Rigidbody otherRb = collision.rigidbody;
-            if (otherRb != null)
+            // Verificar si el objeto colisionado tiene la etiqueta "Rebote"
+            if (collision.gameObject.CompareTag("Rebote"))
             {
-                // Calcula la fuerza de reacción
-                Vector3 fuerzaReaccion = -collision.impulse;
-                otherRb.AddForce(fuerzaReaccion, ForceMode.Impulse);
+                // Calcula la fuerza de rebote
+                Vector3 fuerzaRebote = collision.contacts[0].normal * (fuerzaMaximaImpulso / 2f);
+                rb.AddForce(fuerzaRebote, ForceMode.Impulse);
 
                 // Desactivar el movimiento del jugador durante el rebote
-                PlayerMovement playerMovement = GetComponent<PlayerMovement>();
                 if (playerMovement != null)
                 {
                     playerMovement.DisableMovement(1f); // Ajusta la duración del rebote según sea necesario
@@ -117,7 +156,7 @@ public class Inercia : MonoBehaviour
 
                 // Opcional: Mostrar información de la colisión
                 Debug.Log("Colisión con: " + collision.gameObject.name);
-                Debug.Log("Fuerza de reacción aplicada: " + fuerzaReaccion);
+                Debug.Log("Fuerza de rebote aplicada: " + fuerzaRebote);
             }
         }
     }

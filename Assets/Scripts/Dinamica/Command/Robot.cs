@@ -25,6 +25,7 @@ namespace CommandPattern
         public float patrolSpeed = 2f;  // Velocidad de patrullaje
         public int currentPatrolIndex = 0;
         public NavMeshSurface navMeshSurface;  // Referencia al NavMeshSurface
+        public Animator animator;  // Referencia al componente Animator
 
         private Queue<ICommand> commandQueue = new Queue<ICommand>();
         private float shootTimer;
@@ -72,11 +73,18 @@ namespace CommandPattern
                 {
                     agent.SetDestination(player.position);
                     isPlayerInRange = true;
+                    animator.SetBool("isChasing", true);  // Activar animación de persecución
                 }
                 else if (isPlayerInRange)
                 {
                     agent.SetDestination(initialPosition);
                     isPlayerInRange = false;
+                }
+
+                // Verificar si el robot ha vuelto a su posición inicial
+                if (!isPlayerInRange && Vector3.Distance(transform.position, initialPosition) < 0.5f)
+                {
+                    animator.SetBool("isChasing", false);  // Desactivar animación de persecución
                 }
             }
 
@@ -160,6 +168,9 @@ namespace CommandPattern
                 }
             }
 
+            // Ajustar la rotación del robot para que coincida con la del punto de patrullaje
+            transform.rotation = patrolPoints[currentPatrolIndex].rotation;
+
             Debug.Log("Cambiando al siguiente punto de patrullaje");
         }
 
@@ -187,6 +198,22 @@ namespace CommandPattern
                 isReversing = !isReversing;
                 SetNextPatrolPoint();
                 Debug.Log("Robot patrullador invirtiendo dirección debido a colisión con bloque");
+            }
+            else if (tipoDeRobot == RobotType.Perseguidor && collision.gameObject.CompareTag("Player"))
+            {
+                // Detener al robot perseguidor por unos segundos
+                StartCoroutine(StopAndResumeChase());
+            }
+        }
+
+        private IEnumerator StopAndResumeChase()
+        {
+            if (agent != null)
+            {
+                agent.isStopped = true; // Detener el agente de navegación
+                yield return new WaitForSeconds(1f); // Esperar 3 segundos
+                agent.isStopped = false; // Reanudar el agente de navegación
+                agent.SetDestination(player.position); // Continuar persiguiendo al jugador
             }
         }
     }
