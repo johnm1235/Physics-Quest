@@ -5,13 +5,15 @@ using UnityEngine;
 public class MassPowerUp : PowerUp
 {
     public float massMultiplier = 2f;
+    private float initialMass;
 
     protected override void ApplyPowerUp(GameObject player)
     {
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.mass *= massMultiplier;
+            initialMass = rb.mass; // Guardar la masa inicial
+            rb.mass *= massMultiplier; // Aplicar el multiplicador
         }
     }
 
@@ -20,7 +22,7 @@ public class MassPowerUp : PowerUp
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.mass /= massMultiplier;
+            rb.mass = initialMass; // Restaurar la masa inicial
         }
     }
 }

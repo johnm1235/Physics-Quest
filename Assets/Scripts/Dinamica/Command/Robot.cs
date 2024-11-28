@@ -82,7 +82,7 @@ namespace CommandPattern
                 }
 
                 // Verificar si el robot ha vuelto a su posición inicial
-                if (!isPlayerInRange && Vector3.Distance(transform.position, initialPosition) < 0.5f)
+                if (!isPlayerInRange && Vector3.Distance(transform.position, initialPosition) < 2f)
                 {
                     animator.SetBool("isChasing", false);  // Desactivar animación de persecución
                 }

@@ -19,6 +19,8 @@ TagManager:
   - Next
   - MRUUI
   - Parabola
+  - Bloque
+  - Rebote
   layers:
   - Default
   - TransparentFX

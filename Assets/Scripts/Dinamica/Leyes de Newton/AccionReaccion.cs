@@ -36,7 +36,7 @@ public class AccionReaccion : MonoBehaviour
 
     private void HandleEmpuje()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             SetEmpujeUIActive(true);
             fuerzaAcumuladaEmpuje = 0f;
@@ -48,7 +48,7 @@ public class AccionReaccion : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.Space))
         {
             AcumularFuerzaEmpuje();
             UpdateEmpujeUI();
@@ -60,7 +60,7 @@ public class AccionReaccion : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.E))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             if (esperaCoroutine != null)
             {
@@ -82,7 +82,7 @@ public class AccionReaccion : MonoBehaviour
     private IEnumerator EsperarYAplicarFuerzaEmpuje()
     {
         yield return new WaitForSeconds(2f); // Esperar 2 segundos si la barra está al máximo
-        if (Input.GetKey(KeyCode.E)) // Verificar si el jugador sigue presionando el botón
+        if (Input.GetKey(KeyCode.Space)) // Verificar si el jugador sigue presionando el botón
         {
             StartCoroutine(AplicarFuerzaEmpuje());
             SetEmpujeUIActive(false);
@@ -103,7 +103,7 @@ public class AccionReaccion : MonoBehaviour
     private void UpdateEmpujeUI()
     {
         empujeSlider.value = Mathf.Clamp01(fuerzaAcumuladaEmpuje / fuerzaMaximaEmpuje);
-        fuerzaEmpujeText.text = "Fuerza: " + fuerzaAcumuladaEmpuje.ToString("F2");
+        fuerzaEmpujeText.text = "FUERZA: " + fuerzaAcumuladaEmpuje.ToString("F2");
     }
 
     private void AcumularFuerzaEmpuje()

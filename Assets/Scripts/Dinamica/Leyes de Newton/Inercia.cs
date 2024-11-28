@@ -99,7 +99,7 @@ public class Inercia : MonoBehaviour
     {
         impulsoSlider.value = Mathf.Clamp01(tiempoCargandoImpulso / tiempoCargaBarra);
         float fuerzaActualImpulso = Mathf.Lerp(0, fuerzaMaximaImpulso, Mathf.Clamp01(tiempoCargandoImpulso / tiempoCargaBarra));
-        fuerzaImpulsoText.text = "Fuerza: " + fuerzaActualImpulso.ToString("F2");
+        fuerzaImpulsoText.text = "IMPULSO: " + fuerzaActualImpulso.ToString("F2");
     }
 
     private IEnumerator ActivarImpulso()
@@ -126,7 +126,7 @@ public class Inercia : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f); // Espera un corto tiempo para aplicar la fuerza
 
-        aceleracionImpulsoText.text = "Aceleración: " + aceleracion.ToString("F2") + " m/s²";
+        aceleracionImpulsoText.text = "ACELERACIÓN: " + aceleracion.ToString("F2") + " m/s²";
         aceleracionImpulsoText.gameObject.SetActive(true);
 
         enImpulso = false;

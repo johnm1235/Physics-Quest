@@ -6,13 +6,15 @@ using UnityEngine;
 public class SpeedPowerUp : PowerUp
 {
     public float speedMultiplier = 2f;
+    private float initialSpeed;
 
     protected override void ApplyPowerUp(GameObject player)
     {
         PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
         if (playerMovement != null)
         {
-            playerMovement.speed *= speedMultiplier;
+            initialSpeed = playerMovement.speed; // Guardar la velocidad inicial
+            playerMovement.speed *= speedMultiplier; // Aplicar el multiplicador
         }
     }
 
@@ -21,7 +23,7 @@ public class SpeedPowerUp : PowerUp
         PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
         if (playerMovement != null)
         {
-            playerMovement.speed /= speedMultiplier;
+            playerMovement.speed = initialSpeed; // Restaurar la velocidad inicial
         }
     }
 }

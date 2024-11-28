@@ -5,13 +5,15 @@ using UnityEngine;
 public class StrengthPowerUp : PowerUp
 {
     public float strengthMultiplier = 2f;
+    private float initialStrength;
 
     protected override void ApplyPowerUp(GameObject player)
     {
         AccionReaccion accionReaccion = player.GetComponent<AccionReaccion>();
         if (accionReaccion != null)
         {
-            accionReaccion.fuerzaMaximaEmpuje *= strengthMultiplier;
+            initialStrength = accionReaccion.fuerzaMaximaEmpuje; // Guardar la fuerza inicial
+            accionReaccion.fuerzaMaximaEmpuje *= strengthMultiplier; // Aplicar el multiplicador
         }
     }
 
@@ -20,7 +22,7 @@ public class StrengthPowerUp : PowerUp
         AccionReaccion accionReaccion = player.GetComponent<AccionReaccion>();
         if (accionReaccion != null)
         {
-            accionReaccion.fuerzaMaximaEmpuje /= strengthMultiplier;
+            accionReaccion.fuerzaMaximaEmpuje = initialStrength; // Restaurar la fuerza inicial
         }
     }
 }
