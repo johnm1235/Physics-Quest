@@ -5,88 +5,88 @@ using System;
 
 namespace StatePattern
 {
-    // simple FPS Controller (logic from FPS Starter)
+    // Controlador simple de FPS (lógica del FPS Starter)
     [RequireComponent(typeof(PlayerInput), typeof(CharacterController), typeof(Animator))]
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private PlayerInput playerInput;
-        private StateMachine playerStateMachine;
+        [SerializeField] private PlayerInput playerInput; // Referencia al componente PlayerInput
+        private StateMachine playerStateMachine; // Máquina de estados del jugador
 
         [Header("Movement")]
         [Tooltip("Horizontal speed")]
-        [SerializeField] public float moveSpeed = 5f;
+        [SerializeField] public float moveSpeed = 5f; // Velocidad de movimiento horizontal
         [Tooltip("Rate of change for move speed")]
-        [SerializeField] public float acceleration = 10f;
+        [SerializeField] public float acceleration = 10f; // Tasa de cambio de la velocidad de movimiento
         [Tooltip("Max height to jump")]
-        [SerializeField] private float jumpHeight = 1.25f;
+        [SerializeField] private float jumpHeight = 1.25f; // Altura máxima de salto
 
         [Tooltip("Custom gravity for player")]
-        [SerializeField] private float gravity = -15f;
+        [SerializeField] private float gravity = -15f; // Gravedad personalizada para el jugador
         [Tooltip("Time between jumps")]
-        [SerializeField] private float jumpTimeout = 0.1f;
+        [SerializeField] private float jumpTimeout = 0.1f; // Tiempo entre saltos
         [Tooltip("Multiplier for running speed")]
-        [SerializeField] private float runMultiplier = 2f;
+        [SerializeField] private float runMultiplier = 2f; // Multiplicador para la velocidad de carrera
 
-        [SerializeField] private bool isGrounded = true;
-        [SerializeField] private float groundedRadius = 0.5f;
-        [SerializeField] private float groundedOffset = 0.15f;
-        [SerializeField] private LayerMask groundLayers;
+        [SerializeField] private bool isGrounded = true; // Indica si el jugador está en el suelo
+        [SerializeField] private float groundedRadius = 0.5f; // Radio para detectar si está en el suelo
+        [SerializeField] private float groundedOffset = 0.15f; // Desplazamiento para la detección del suelo
+        [SerializeField] private LayerMask groundLayers; // Capas que se consideran como suelo
 
-        [SerializeField] private Transform sphere;
-        private Animator anim;
+        [SerializeField] private Transform sphere; // Referencia a la esfera del jugador
+        private Animator anim; // Referencia al componente Animator
 
-        [SerializeField] Vector3 horizontalVelocity;
+        [SerializeField] Vector3 horizontalVelocity; // Velocidad horizontal del jugador
 
-        public CharacterController CharController => charController;
-        public bool IsGrounded => isGrounded;
-        public StateMachine PlayerStateMachine => playerStateMachine;
+        public CharacterController CharController => charController; // Propiedad para obtener el CharacterController
+        public bool IsGrounded => isGrounded; // Propiedad para obtener si el jugador está en el suelo
+        public StateMachine PlayerStateMachine => playerStateMachine; // Propiedad para obtener la máquina de estados del jugador
 
-        private CharacterController charController;
-        private float targetSpeed;
-        private float verticalVelocity;
-        private float jumpCooldown;
+        private CharacterController charController; // Referencia al componente CharacterController
+        private float targetSpeed; // Velocidad objetivo
+        private float verticalVelocity; // Velocidad vertical
+        private float jumpCooldown; // Tiempo de espera entre saltos
 
         [Header("MRU")]
-        [SerializeField] private float speedMRU = 4f;
-        [SerializeField] private float lossTime = 2f;
-        private float timeUnderSpeed;
+        [SerializeField] private float speedMRU = 4f; // Velocidad mínima permitida en la sección MRU
+        [SerializeField] private float lossTime = 2f; // Tiempo permitido por debajo de la velocidad mínima
+        private float timeUnderSpeed; // Tiempo acumulado por debajo de la velocidad mínima
 
-        private bool sectionMRU = false;
-        private bool playerIsDead = false;
+        private bool sectionMRU = false; // Indica si el jugador está en la sección MRU
+        private bool playerIsDead = false; // Indica si el jugador está muerto
 
-        [SerializeField] private GameObject player;
+        [SerializeField] private GameObject player; // Referencia al objeto del jugador
 
         // Nueva variable para el nivel del jugador
-        [SerializeField] private int playerLevel = 1;
+        [SerializeField] private int playerLevel = 1; // Nivel del jugador
 
         private void Awake()
         {
-            playerInput = GetComponent<PlayerInput>();
-            charController = GetComponent<CharacterController>();
-            anim = GetComponent<Animator>();
-            playerStateMachine = new StateMachine(this);
+            playerInput = GetComponent<PlayerInput>(); // Obtener el componente PlayerInput
+            charController = GetComponent<CharacterController>(); // Obtener el componente CharacterController
+            anim = GetComponent<Animator>(); // Obtener el componente Animator
+            playerStateMachine = new StateMachine(this); // Inicializar la máquina de estados del jugador
         }
 
         private void Start()
         {
-            playerStateMachine.Initialize(playerStateMachine.idleState);
+            playerStateMachine.Initialize(playerStateMachine.idleState); // Inicializar la máquina de estados en el estado idle
         }
 
         private void Update()
         {
-            // update the current State
+            // Actualizar el estado actual
             playerStateMachine.Update();
         }
 
         private void LateUpdate()
         {
-            CalculateVertical();
-            Move();
+            CalculateVertical(); // Calcular la velocidad vertical
+            Move(); // Mover al jugador
         }
 
         private void Move()
         {
-            Vector3 inputVector = playerInput.InputVector;
+            Vector3 inputVector = playerInput.InputVector; // Obtener el vector de entrada del jugador
 
             // Determinar la velocidad actual en función de si el jugador está en el suelo
             float currentMoveSpeed = (playerInput.IsRunning && playerLevel >= 2) ? moveSpeed * runMultiplier : moveSpeed;
@@ -130,8 +130,6 @@ namespace StatePattern
             }
         }
 
-
-
         private void MRU(float currentHorizontalSpeed)
         {
             // Verifica si la velocidad es menor que la mínima permitida
@@ -153,6 +151,7 @@ namespace StatePattern
                 playerIsDead = false;
             }
         }
+
         private void CalculateVertical()
         {
             if (isGrounded)
@@ -184,7 +183,6 @@ namespace StatePattern
             isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
         }
 
-
         private void OnDrawGizmosSelected()
         {
             Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
@@ -193,7 +191,7 @@ namespace StatePattern
             if (isGrounded) Gizmos.color = transparentGreen;
             else Gizmos.color = transparentRed;
 
-            // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+            // Cuando se selecciona, dibuja un gizmo en la posición y con el radio del colisionador de suelo
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z), groundedRadius);
         }
 

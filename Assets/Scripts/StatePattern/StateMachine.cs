@@ -5,55 +5,53 @@ using UnityEngine;
 
 namespace StatePattern
 {
-    // handles
+    // Maneja la máquina de estados
     [Serializable]
     public class StateMachine
     {
-        public IState CurrentState { get; private set; }
+        public IState CurrentState { get; private set; } // Estado actual
 
-        // reference to the state objects
+        // Referencias a los objetos de estado
         public RunState runState;
         public WalkState walkState;
         public JumpState jumpState;
         public IdleState idleState;
 
-
-        // event to notify other objects of the state change
+        // Evento para notificar a otros objetos del cambio de estado
         public event Action<IState> stateChanged;
 
-        // pass in necessary parameters into constructor 
+        // Pasar los parámetros necesarios al constructor
         public StateMachine(PlayerController player)
         {
-            // create an instance for each state and pass in PlayerController
+            // Crear una instancia para cada estado y pasar el PlayerController
             this.walkState = new WalkState(player);
             this.jumpState = new JumpState(player);
             this.idleState = new IdleState(player);
             this.runState = new RunState(player);
-
         }
 
-        // set the starting state
+        // Establecer el estado inicial
         public void Initialize(IState state)
         {
             CurrentState = state;
             state.Enter();
 
-            // notify other objects that state has changed
+            // Notificar a otros objetos que el estado ha cambiado
             stateChanged?.Invoke(state);
         }
 
-        // exit this state and enter another
+        // Salir de este estado y entrar en otro
         public void TransitionTo(IState nextState)
         {
             CurrentState.Exit();
             CurrentState = nextState;
             nextState.Enter();
 
-            // notify other objects that state has changed
+            // Notificar a otros objetos que el estado ha cambiado
             stateChanged?.Invoke(nextState);
         }
 
-        // allow the StateMachine to update this state
+        // Permitir que la máquina de estados actualice este estado
         public void Update()
         {
             if (CurrentState != null)

@@ -6,47 +6,43 @@ namespace StatePattern
 {
     public class PlayerInput : MonoBehaviour
     {
-
-        // old input system 
+        // Sistema de entrada antiguo
         [Header("Controls")]
-        [SerializeField] private KeyCode forward = KeyCode.W;
-        [SerializeField] private KeyCode back = KeyCode.S;
-        [SerializeField] private KeyCode left = KeyCode.A;
-        [SerializeField] private KeyCode right = KeyCode.D;
-        [SerializeField] private KeyCode jump = KeyCode.Space;
-        [SerializeField] private KeyCode run = KeyCode.LeftShift;  // Run key
+        [SerializeField] private KeyCode forward = KeyCode.W; // Tecla para avanzar
+        [SerializeField] private KeyCode back = KeyCode.S; // Tecla para retroceder
+        [SerializeField] private KeyCode left = KeyCode.A; // Tecla para moverse a la izquierda
+        [SerializeField] private KeyCode right = KeyCode.D; // Tecla para moverse a la derecha
+        [SerializeField] private KeyCode jump = KeyCode.Space; // Tecla para saltar
+        [SerializeField] private KeyCode run = KeyCode.LeftShift; // Tecla para correr
 
-        [SerializeField] private KeyCode attack = KeyCode.Mouse0;  // Attack key
-        [SerializeField] private KeyCode dash = KeyCode.E;  // Block key
+        [SerializeField] private KeyCode attack = KeyCode.Mouse0; // Tecla para atacar
+        [SerializeField] private KeyCode dash = KeyCode.E; // Tecla para hacer un dash
 
-        [SerializeField] private KeyCode openMenu = KeyCode.M;  // Interact key
+        [SerializeField] private KeyCode openMenu = KeyCode.M; // Tecla para abrir el menú
 
-        [SerializeField] public KeyCode min = KeyCode.LeftArrow;
-        [SerializeField] public KeyCode max = KeyCode.RightArrow;
+        [SerializeField] public KeyCode min = KeyCode.LeftArrow; // Tecla para acción mínima
+        [SerializeField] public KeyCode max = KeyCode.RightArrow; // Tecla para acción máxima
 
-        public Vector3 InputVector => inputVector;
-        public bool IsJumping { get => isJumping; set => isJumping = value; }
-        public bool IsRunning { get => isRunning; set => isRunning = value; }  // Added running state
+        public Vector3 InputVector => inputVector; // Vector de entrada
+        public bool IsJumping { get => isJumping; set => isJumping = value; } // Estado de salto
+        public bool IsRunning { get => isRunning; set => isRunning = value; } // Estado de correr
 
-        public bool IsDashing { get => isDashing; set => isDashing = value; }
+        public bool IsDashing { get => isDashing; set => isDashing = value; } // Estado de dash
         private bool isDashing;
 
-        public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+        public bool IsAttacking { get => isAttacking; set => isAttacking = value; } // Estado de ataque
         private bool isAttacking;
 
-        public bool IsMenuOpen { get => isMenuOpen; set => isMenuOpen = value; }
+        public bool IsMenuOpen { get => isMenuOpen; set => isMenuOpen = value; } // Estado del menú
         private bool isMenuOpen;
 
+        private Vector3 inputVector; // Vector de entrada
+        private bool isJumping; // Estado de salto
+        private bool isRunning; // Estado de correr
 
-
-        private Vector3 inputVector;
-        private bool isJumping;
-        private bool isRunning;
-
-
-        private float xInput;
-        private float zInput;
-        private float yInput;
+        private float xInput; // Entrada en el eje X
+        private float zInput; // Entrada en el eje Z
+        private float yInput; // Entrada en el eje Y
 
         public void HandleInput()
         {
@@ -74,24 +70,23 @@ namespace StatePattern
                 xInput++;
             }
 
-            inputVector = new Vector3(xInput, yInput, zInput);
+            inputVector = new Vector3(xInput, yInput, zInput); // Actualizar el vector de entrada
 
-            isJumping = Input.GetKeyDown(jump);
+            isJumping = Input.GetKeyDown(jump); // Verificar si se presionó la tecla de salto
 
-            // Check if the player is running
+            // Verificar si el jugador está corriendo
             isRunning = Input.GetKey(run);
 
-            isDashing = Input.GetKeyDown(dash);
+            isDashing = Input.GetKeyDown(dash); // Verificar si se presionó la tecla de dash
 
-            isAttacking = Input.GetKeyDown(attack);
+            isAttacking = Input.GetKeyDown(attack); // Verificar si se presionó la tecla de ataque
 
-            isMenuOpen = Input.GetKeyDown(openMenu);
-
+            isMenuOpen = Input.GetKeyDown(openMenu); // Verificar si se presionó la tecla de menú
         }
 
         private void Update()
         {
-            HandleInput();
+            HandleInput(); // Manejar la entrada en cada frame
         }
     }
 }
