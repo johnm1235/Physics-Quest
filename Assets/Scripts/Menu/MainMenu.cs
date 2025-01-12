@@ -23,6 +23,12 @@ public class MainMenu : MonoBehaviour
        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    public void Multiplayer()
+    {
+        AudioManager.Instance.PlaySFX(buttonClickSound);
+        SceneManager.LoadScene("MultijugadorScene");
+    }
+
     public void Options()
     {
 

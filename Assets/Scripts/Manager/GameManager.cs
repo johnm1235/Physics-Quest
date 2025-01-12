@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 // Definición de la clase GameManager que hereda de MonoBehaviour
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class GameManager : MonoBehaviour
     public Transform[] sectionStartPositions;
     public int currentSection = 0;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private Camera secondaryCamera;
+
+
+    public Transform[] spawnPoints; // Lugares donde aparecen los jugadores
 
     // Método Awake que se llama al inicializar el script
     private void Awake()
@@ -48,26 +51,18 @@ public class GameManager : MonoBehaviour
         // Asignar el jugador y las cámaras si no están asignados
         if (player == null) player = GameObject.FindWithTag("Player");
         if (mainCamera == null) mainCamera = Camera.main;
-        if (secondaryCamera == null) secondaryCamera = GameObject.FindWithTag("SecondaryCamera").GetComponent<Camera>();
 
         // Reasignar las posiciones de inicio de las secciones
-        sectionStartPositions = new Transform[5];
+        sectionStartPositions = new Transform[1];
         sectionStartPositions[0] = GameObject.FindWithTag("Pos1").transform;
-        sectionStartPositions[1] = GameObject.FindWithTag("Pos2").transform;
-        sectionStartPositions[2] = GameObject.FindWithTag("Pos3").transform;
-        sectionStartPositions[3] = GameObject.FindWithTag("Pos4").transform;
-        sectionStartPositions[4] = GameObject.FindWithTag("Pos5").transform;
+
     }
 
     // Método Start que se llama al iniciar el script
     public void Start()
     {
-        // Verificar si la cámara secundaria está asignada
-        if (secondaryCamera == null)
-        {
-            Debug.LogError("Main camera is not assigned.");
-        }
         BlockCursor(); // Bloquear el cursor
+        RestartSection(); // Reiniciar la sección actual
     }
 
     // Método Update que se llama una vez por frame
@@ -84,7 +79,6 @@ public class GameManager : MonoBehaviour
     public void RestartSection()
     {
         mainCamera.enabled = true;
-        secondaryCamera.enabled = false;
         if (player != null && sectionStartPositions != null && currentSection < sectionStartPositions.Length)
         {
             Debug.Log("Restarting section " + currentSection);
@@ -203,9 +197,5 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (KnowledgeManager.Instance != null)
-        {
-            KnowledgeManager.Instance.ResetKnowledge();
-        }
     }
 }

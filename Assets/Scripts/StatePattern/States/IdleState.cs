@@ -27,7 +27,7 @@ namespace StatePattern
         public void Enter()
         {
             // code that runs when we first enter the state
-            Debug.Log("Entering Idle State");
+
             anim.SetBool("Idle",true);
         }
 
@@ -51,7 +51,7 @@ namespace StatePattern
         public void Exit()
         {
             // code that runs when we exit the state
-            Debug.Log("Exiting Idle State");
+
             anim.SetBool("Idle", false);
         }
     }

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using Photon.Pun;
 
 namespace StatePattern
 {
     // Controlador simple de FPS (lógica del FPS Starter)
     [RequireComponent(typeof(PlayerInput), typeof(CharacterController), typeof(Animator))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviourPunCallbacks
     {
         [SerializeField] private PlayerInput playerInput; // Referencia al componente PlayerInput
         private StateMachine playerStateMachine; // Máquina de estados del jugador
@@ -59,6 +59,8 @@ namespace StatePattern
         // Nueva variable para el nivel del jugador
         [SerializeField] private int playerLevel = 1; // Nivel del jugador
 
+        public Renderer playerRenderer; // Referencia al componente Renderer
+
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>(); // Obtener el componente PlayerInput
@@ -70,6 +72,7 @@ namespace StatePattern
         private void Start()
         {
             playerStateMachine.Initialize(playerStateMachine.idleState); // Inicializar la máquina de estados en el estado idle
+            DontDestroyOnLoad(gameObject); // Persistir el objeto al cambiar de escena
         }
 
         private void Update()
@@ -80,8 +83,11 @@ namespace StatePattern
 
         private void LateUpdate()
         {
-            CalculateVertical(); // Calcular la velocidad vertical
-            Move(); // Mover al jugador
+            if (photonView.IsMine)
+            {
+                CalculateVertical(); // Calcular la velocidad vertical
+                Move(); // Mover al jugador
+            }
         }
 
         private void Move()
@@ -130,28 +136,6 @@ namespace StatePattern
             }
         }
 
-        private void MRU(float currentHorizontalSpeed)
-        {
-            // Verifica si la velocidad es menor que la mínima permitida
-            if (currentHorizontalSpeed < speedMRU)
-            {
-                timeUnderSpeed += Time.deltaTime;
-                if (timeUnderSpeed >= lossTime)
-                {
-                    playerIsDead = true;
-                    Debug.Log("Has perdido: la velocidad ha bajado de la mínima permitida.");
-                    // GameManager.Instance.RestartSection();
-                    sectionMRU = false;
-                }
-            }
-            else
-            {
-                // Reinicia el tiempo si la velocidad está por encima de la mínima
-                timeUnderSpeed = 0f;
-                playerIsDead = false;
-            }
-        }
-
         private void CalculateVertical()
         {
             if (isGrounded)
@@ -161,9 +145,10 @@ namespace StatePattern
                     verticalVelocity = -2f;
                 }
 
-                if (playerInput.IsJumping && jumpCooldown <= 0f && playerLevel >= 2)
+                if (playerInput.IsJumping && jumpCooldown <= 0f)
                 {
                     verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                    jumpCooldown = jumpTimeout; // Reiniciar el tiempo de espera entre saltos
                 }
 
                 if (jumpCooldown >= 0f)
@@ -173,7 +158,6 @@ namespace StatePattern
             }
             else
             {
-                jumpCooldown = jumpTimeout;
                 playerInput.IsJumping = false;
             }
 
@@ -182,6 +166,7 @@ namespace StatePattern
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z);
             isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
         }
+
 
         private void OnDrawGizmosSelected()
         {
@@ -195,19 +180,20 @@ namespace StatePattern
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z), groundedRadius);
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void ApplyColorFromPhoton()
         {
-            if (other.CompareTag("MRU"))
+            if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("PlayerColor", out object colorData))
             {
-                sectionMRU = true;
+                ApplyColor((float[])colorData);
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void ApplyColor(float[] colorData)
         {
-            if (other.CompareTag("MRU"))
+            if (playerRenderer != null && colorData.Length == 4)
             {
-                sectionMRU = false;
+                Color color = new Color(colorData[0], colorData[1], colorData[2], colorData[3]);
+                playerRenderer.material.color = color;
             }
         }
     }

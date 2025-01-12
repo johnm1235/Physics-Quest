@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform target; 
+    [SerializeField] private Transform target;
     [SerializeField] private float smoothSpeed = 0.125f;
     [SerializeField] private Vector3 offset;
+
+    private void Start()
+    {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
     private void LateUpdate()
     {
@@ -18,7 +23,4 @@ public class CameraFollow : MonoBehaviour
 
         transform.LookAt(target);
     }
-
-
 }
-

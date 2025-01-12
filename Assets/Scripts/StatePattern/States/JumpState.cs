@@ -24,7 +24,7 @@ namespace StatePattern
         public void Enter()
         {
             // code that runs when we first enter the state
-            Debug.Log("Entering Jump State");
+
             anim.SetBool("Jump", true);
         }
 
@@ -56,7 +56,6 @@ namespace StatePattern
         public void Exit()
         {
             // code that runs when we exit the state
-            Debug.Log("Exiting Jump State");
             anim.SetBool("Jump", false);
         }
 
