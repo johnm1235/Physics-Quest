@@ -9,7 +9,7 @@ public class QuestionManagerSO : MonoBehaviour
 
     public QuestionDataSO CurrentQuestion => questions[currentQuestionIndex];
 
-    private void Start()
+    private void OnEnable()
     {
         LoadCurrentQuestion();
     }

@@ -55,14 +55,14 @@ public class GameManager : MonoBehaviour
         // Reasignar las posiciones de inicio de las secciones
         sectionStartPositions = new Transform[1];
         sectionStartPositions[0] = GameObject.FindWithTag("Pos1").transform;
+        RestartSection();
 
     }
 
     // Método Start que se llama al iniciar el script
     public void Start()
     {
-        BlockCursor(); // Bloquear el cursor
-        RestartSection(); // Reiniciar la sección actual
+        BlockCursor(); // Bloquear el 
     }
 
     // Método Update que se llama una vez por frame
@@ -108,32 +108,6 @@ public class GameManager : MonoBehaviour
     public void ShowDefeatMessage()
     {
         Time.timeScale = 0f; // Pausar el juego
-    }
-
-    // Método para avanzar a la siguiente sección
-    public void AdvanceToNextSection()
-    {
-        if (currentSection < sectionStartPositions.Length - 1)
-        {
-            currentSection++;
-            Debug.Log("Now in section " + currentSection);
-        }
-        else
-        {
-            Debug.Log("No more sections to advance.");
-        }
-    }
-
-    // Método para completar la sección actual
-    public void CompleteSection()
-    {
-        AdvanceToNextSection();
-    }
-
-    // Método para cargar el siguiente nivel
-    public void NextLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     // Método para bloquear el cursor

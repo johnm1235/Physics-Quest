@@ -15625,7 +15625,6 @@ MonoBehaviour:
   mainCamera: {fileID: 963194227}
   spawnPoints:
   - {fileID: 1092761074}
-  playerPrefab: {fileID: 0}
 --- !u!114 &1627290002
 MonoBehaviour:
   m_ObjectHideFlags: 0

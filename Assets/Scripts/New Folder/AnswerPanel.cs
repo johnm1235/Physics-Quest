@@ -11,7 +11,6 @@ public class AnswerPanel : MonoBehaviour
     void Start()
     {
         questionManager = FindObjectOfType<QuestionManagerSO>();
-
     }
 
     public void CheckAnswer()

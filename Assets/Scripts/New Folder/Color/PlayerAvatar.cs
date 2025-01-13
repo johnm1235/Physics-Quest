@@ -12,7 +12,7 @@ public class PlayerAvatar : MonoBehaviourPun
         playerRenderer.material.color = color;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         if (photonView.IsMine)
         {

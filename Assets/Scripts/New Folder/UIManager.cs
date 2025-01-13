@@ -7,8 +7,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public TextMeshProUGUI questionText; // Texto para la pregunta
-    public TextMeshProUGUI formulaText;  // Texto para la fórmula
+    public TextMeshProUGUI questionText; 
+    public TextMeshProUGUI formulaText; 
     public GameObject formulaCompletePanel;
     public GameObject adventagePanel;
 

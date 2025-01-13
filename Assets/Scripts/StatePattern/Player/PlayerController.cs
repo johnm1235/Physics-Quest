@@ -124,16 +124,15 @@ namespace StatePattern
             Vector3 moveDirection = (horizontalVelocity * Time.deltaTime) + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime;
             charController.Move(moveDirection);
 
-            // Rotación del jugador y de la esfera
+            // Rotar el jugador en la dirección del movimiento
             if (inputVector != Vector3.zero)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(inputVector);
-                player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
-
-                Vector3 rotationAxis = Vector3.Cross(Vector3.up, inputVector.normalized);
-                float rotationAmount = currentMoveSpeed * Time.deltaTime * 360f / (2f * Mathf.PI * sphere.localScale.x);
-                sphere.Rotate(rotationAxis, rotationAmount, Space.World);
+                player.transform.forward = horizontalVelocity.normalized;
+                player.transform.Rotate(Vector3.up, 100f * Time.deltaTime);
             }
+
+
+
         }
 
         private void CalculateVertical()
