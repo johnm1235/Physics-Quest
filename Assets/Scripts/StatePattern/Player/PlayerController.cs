@@ -46,15 +46,10 @@ namespace StatePattern
         private float verticalVelocity; // Velocidad vertical
         private float jumpCooldown; // Tiempo de espera entre saltos
 
-        [Header("MRU")]
-        [SerializeField] private float speedMRU = 4f; // Velocidad mínima permitida en la sección MRU
-        [SerializeField] private float lossTime = 2f; // Tiempo permitido por debajo de la velocidad mínima
-        private float timeUnderSpeed; // Tiempo acumulado por debajo de la velocidad mínima
+        [SerializeField] private float rotationDamping = 0.5f; // Factor de amortiguación de rotación
 
         private bool sectionMRU = false; // Indica si el jugador está en la sección MRU
         private bool playerIsDead = false; // Indica si el jugador está muerto
-
-        [SerializeField] private GameObject player; // Referencia al objeto del jugador
 
         // Nueva variable para el nivel del jugador
         [SerializeField] private int playerLevel = 1; // Nivel del jugador
@@ -87,6 +82,7 @@ namespace StatePattern
             {
                 CalculateVertical(); // Calcular la velocidad vertical
                 Move(); // Mover al jugador
+                RotateSphere(); // Rotar la esfera del jugador
             }
         }
 
@@ -124,15 +120,6 @@ namespace StatePattern
             Vector3 moveDirection = (horizontalVelocity * Time.deltaTime) + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime;
             charController.Move(moveDirection);
 
-            // Rotar el jugador en la dirección del movimiento
-            if (inputVector != Vector3.zero)
-            {
-                player.transform.forward = horizontalVelocity.normalized;
-                player.transform.Rotate(Vector3.up, 100f * Time.deltaTime);
-            }
-
-
-
         }
 
         private void CalculateVertical()
@@ -165,6 +152,37 @@ namespace StatePattern
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z);
             isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
         }
+        /*
+
+        private void RotateSphere()
+        {
+            if (horizontalVelocity.magnitude > 0.01f) // Si hay movimiento horizontal significativo
+            {
+                Vector3 rotationAxis = Vector3.Cross(Vector3.up, horizontalVelocity.normalized);
+
+                // Calcula la rotación basada en la circunferencia de la esfera
+                float sphereRadius = sphere.localScale.x * 0.5f; // Radio de la esfera
+                float rotationAngle = (horizontalVelocity.magnitude * Time.deltaTime) / (2f * Mathf.PI * sphereRadius); // Distancia / Circunferencia
+
+                sphere.Rotate(rotationAxis, Mathf.Rad2Deg * rotationAngle, Space.World);
+            }
+        }*/
+
+
+        private void RotateSphere()
+        {
+            if (horizontalVelocity.magnitude > 0.01f) // Si hay movimiento horizontal significativo
+            {
+                Vector3 rotationAxis = Vector3.Cross(Vector3.up, horizontalVelocity.normalized);
+
+                // Aplica un factor de amortiguación a la velocidad de rotación
+                float rotationAngle = horizontalVelocity.magnitude * Time.deltaTime * rotationDamping;
+
+                sphere.Rotate(rotationAxis, Mathf.Rad2Deg * rotationAngle, Space.World);
+            }
+        }
+
+
 
 
         private void OnDrawGizmosSelected()

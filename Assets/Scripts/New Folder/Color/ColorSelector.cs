@@ -16,9 +16,10 @@ public class ColorSelector : MonoBehaviour
         ApplyColor(selectedColor);
     }
 
-    public void SelectColor(Image colorButton)
+    public void HandleColorPicked(Color color)
     {
-        selectedColor = colorButton.color;
+        // Actualiza el color seleccionado
+        selectedColor = color;
         ApplyColor(selectedColor);
         SaveColor(selectedColor);
 

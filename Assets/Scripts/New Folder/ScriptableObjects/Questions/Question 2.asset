@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175c9e050021be347aac078b4667ab5e, type: 3}
   m_Name: Question 2
   m_EditorClassIdentifier: 
-  question: Hola
-  formula: c=d
+  question: "C\xFAal es la formula de velocidad?"
+  formula: v = d / t
   components:
-  - c
+  - v
   - =
   - d
-  correctFormula: c=3
+  - /
+  - t
+  correctFormula: v=d/t

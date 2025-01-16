@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 175c9e050021be347aac078b4667ab5e, type: 3}
-  m_Name: Question 3
+  m_Name: NewQuestion
   m_EditorClassIdentifier: 
-  question: "C\xFAal es el simbolo de tiempo?"
+  question: "Cu\xE1l es el simbolo de Velocidad?"
   formula: 
   components:
-  - t
-  correctFormula: t
+  - V
+  correctFormula: V

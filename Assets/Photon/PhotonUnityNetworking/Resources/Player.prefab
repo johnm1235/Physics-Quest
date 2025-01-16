@@ -262,7 +262,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7149256317410938936, guid: 3f26ec88294a7ea429c7ef2ae413041c, type: 3}
+  - {fileID: 2100000, guid: cccd2e30c72256b409c184a6d42b852b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -420,9 +420,7 @@ MonoBehaviour:
     m_Bits: 256
   sphere: {fileID: 662587940499685282}
   horizontalVelocity: {x: 0, y: 0, z: 0}
-  speedMRU: 5
-  lossTime: 3.95
-  player: {fileID: 3777066559586034340}
+  rotationDamping: 1
   playerLevel: 1
   playerRenderer: {fileID: 1032305978616083955}
 --- !u!114 &1682693277993761132
@@ -555,7 +553,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7149256317410938936, guid: 3f26ec88294a7ea429c7ef2ae413041c, type: 3}
+  - {fileID: 2100000, guid: cccd2e30c72256b409c184a6d42b852b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
