@@ -16,9 +16,10 @@ public class ColorPicker : MonoBehaviour
     public ColorEvent OnColorSelect;
     private RectTransform rect;
     private Texture2D colorTexture;
+    public Material targetMaterial;
 
 
-    void Start()
+     public void Start()
     {
         rect = GetComponent<RectTransform>();
         colorTexture = GetComponent<Image>().mainTexture as Texture2D;
@@ -31,10 +32,11 @@ public class ColorPicker : MonoBehaviour
     {
         // Aplica el color al jugador local y guarda en Photon
         MultiplayerColorManager.Instance.SaveColor(color);
+        targetMaterial.color = color;
     }
 
 
-    void Update()
+    public void Update()
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(rect, Input.mousePosition))
         {
@@ -56,6 +58,15 @@ public class ColorPicker : MonoBehaviour
             {
                 OnColorSelect?.Invoke(color);
             }
+        }
+    }
+
+    public void OnDestroy()
+    {
+        // Resetear el color del material al color original
+        if (targetMaterial != null)
+        {
+         //   targetMaterial.color = Color.white;
         }
     }
 

@@ -9,7 +9,7 @@ public class QuestionManagerSO : MonoBehaviour
 
     public QuestionDataSO CurrentQuestion => questions[currentQuestionIndex];
 
-    private void OnEnable()
+    private void Start()
     {
         LoadCurrentQuestion();
     }
@@ -27,7 +27,7 @@ public class QuestionManagerSO : MonoBehaviour
         LoadCurrentQuestion();
     }
 
-    private void LoadCurrentQuestion()
+    public void LoadCurrentQuestion()
     {
         // Limpia la fórmula anterior antes de inicializar una nueva
         UIManager.Instance.ResetFormula();
@@ -85,4 +85,8 @@ public class QuestionManagerSO : MonoBehaviour
 
         return components.ToArray();
     }
+
+
+
+
 }

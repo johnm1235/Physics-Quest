@@ -44,4 +44,5 @@ public class FormulaSpawner : MonoBehaviour
             spawned.GetComponent<FormulaComponent>().value = component;
         }
     }
+
 }

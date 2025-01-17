@@ -9,6 +9,7 @@ public class LevelLoader : MonoBehaviourPunCallbacks
     {
 
         StartCoroutine(LoadLevel());
+
     }
 
     IEnumerator LoadLevel()

@@ -152,21 +152,6 @@ namespace StatePattern
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + groundedOffset, transform.position.z);
             isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
         }
-        /*
-
-        private void RotateSphere()
-        {
-            if (horizontalVelocity.magnitude > 0.01f) // Si hay movimiento horizontal significativo
-            {
-                Vector3 rotationAxis = Vector3.Cross(Vector3.up, horizontalVelocity.normalized);
-
-                // Calcula la rotación basada en la circunferencia de la esfera
-                float sphereRadius = sphere.localScale.x * 0.5f; // Radio de la esfera
-                float rotationAngle = (horizontalVelocity.magnitude * Time.deltaTime) / (2f * Mathf.PI * sphereRadius); // Distancia / Circunferencia
-
-                sphere.Rotate(rotationAxis, Mathf.Rad2Deg * rotationAngle, Space.World);
-            }
-        }*/
 
 
         private void RotateSphere()
@@ -181,9 +166,6 @@ namespace StatePattern
                 sphere.Rotate(rotationAxis, Mathf.Rad2Deg * rotationAngle, Space.World);
             }
         }
-
-
-
 
         private void OnDrawGizmosSelected()
         {

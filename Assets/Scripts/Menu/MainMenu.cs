@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,10 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
 
         AudioManager.Instance.PlayMusic(menuMusic);
         optionsMenu.SetActive(false);
@@ -18,7 +23,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("Intro");
+        SceneManager.LoadScene("CustomeScene");
         AudioManager.Instance.PlaySFX(buttonClickSound);
        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -48,5 +53,11 @@ public class MainMenu : MonoBehaviour
         AudioManager.Instance.PlaySFX(buttonClickSound);
         Debug.Log("Quit");
         Application.Quit();
+
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
+
     }
 }

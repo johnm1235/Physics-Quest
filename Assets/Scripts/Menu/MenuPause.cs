@@ -11,6 +11,7 @@ public class MenuPause : MonoBehaviour
     private void Start()
     {
         pauseMenu.SetActive(false);
+        GameManager.Instance.RestartSection();
     }
 
     private void Update()

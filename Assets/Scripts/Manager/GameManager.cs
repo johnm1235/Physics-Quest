@@ -1,4 +1,5 @@
 // Usando las bibliotecas necesarias
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,7 +56,6 @@ public class GameManager : MonoBehaviour
         // Reasignar las posiciones de inicio de las secciones
         sectionStartPositions = new Transform[1];
         sectionStartPositions[0] = GameObject.FindWithTag("Pos1").transform;
-        RestartSection();
 
     }
 
@@ -139,6 +139,10 @@ public class GameManager : MonoBehaviour
     // Método para ir al menú principal
     public void GoToMenu()
     {
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
         ResetGame();
         SceneManager.LoadScene(0);
     }
@@ -172,4 +176,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+
+
 }

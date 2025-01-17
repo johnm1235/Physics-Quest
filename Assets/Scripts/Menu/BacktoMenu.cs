@@ -7,6 +7,7 @@ public class BacktoMenu : MonoBehaviour
 {
     public void BackToMenu()
     {
+       // GameManager.Instance.StartNewGame();
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
         GameManager.Instance.currentSection = 0;

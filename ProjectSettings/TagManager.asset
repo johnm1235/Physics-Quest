@@ -32,6 +32,7 @@ TagManager:
   - Barrera4
   - Barrera5
   - Barrera6
+  - QuestionManager
   layers:
   - Default
   - TransparentFX

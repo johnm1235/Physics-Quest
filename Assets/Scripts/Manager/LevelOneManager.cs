@@ -9,6 +9,7 @@ public class LevelOneManager : MonoBehaviour
     [SerializeField] private AudioClip energyChargeSFX;
     [SerializeField] private AudioClip speedArrowSFX;
 
+
     private void Start()
     {
 

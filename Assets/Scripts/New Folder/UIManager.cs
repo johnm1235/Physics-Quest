@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
 
             formulaCompletePanel.SetActive(true); // Muestra el panel
             GameManager.Instance.UnlockCursor(); // Desbloquea el cursor
+            Time.timeScale = 0; // Pausa el juego
         }
     }
 
@@ -99,6 +100,7 @@ public class UIManager : MonoBehaviour
         collectedComponents.Clear();
         formulaText.text = "";
         formulaCompletePanel.SetActive(false);
+        Time.timeScale = 1;
         GameManager.Instance.BlockCursor();
     }
 
@@ -113,4 +115,5 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         adventagePanel.SetActive(false);
     }
+
 }
