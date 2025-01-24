@@ -51,6 +51,8 @@ public class UIManager : MonoBehaviour
         }
         UpdateFormulaUI();
 
+
+        //Cambiar a al obtener ventajas
         if (AllComponentsCollected())
         {
 

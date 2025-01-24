@@ -156,14 +156,17 @@ namespace StatePattern
 
         private void RotateSphere()
         {
-            if (horizontalVelocity.magnitude > 0.01f) // Si hay movimiento horizontal significativo
+            if (photonView.IsMine)
             {
-                Vector3 rotationAxis = Vector3.Cross(Vector3.up, horizontalVelocity.normalized);
+                if (horizontalVelocity.magnitude > 0.01f) // Si hay movimiento horizontal significativo
+                {
+                    Vector3 rotationAxis = Vector3.Cross(Vector3.up, horizontalVelocity.normalized);
 
-                // Aplica un factor de amortiguación a la velocidad de rotación
-                float rotationAngle = horizontalVelocity.magnitude * Time.deltaTime * rotationDamping;
+                    // Aplica un factor de amortiguación a la velocidad de rotación
+                    float rotationAngle = horizontalVelocity.magnitude * Time.deltaTime * rotationDamping;
 
-                sphere.Rotate(rotationAxis, Mathf.Rad2Deg * rotationAngle, Space.World);
+                    sphere.Rotate(rotationAxis, Mathf.Rad2Deg * rotationAngle, Space.World);
+                }
             }
         }
 
