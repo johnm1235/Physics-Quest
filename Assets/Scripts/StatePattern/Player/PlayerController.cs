@@ -76,13 +76,14 @@ namespace StatePattern
             playerStateMachine.Update();
         }
 
+
         private void LateUpdate()
         {
             if (photonView.IsMine)
             {
-                CalculateVertical(); // Calcular la velocidad vertical
                 Move(); // Mover al jugador
                 RotateSphere(); // Rotar la esfera del jugador
+                CalculateVertical();
             }
         }
 
@@ -169,6 +170,7 @@ namespace StatePattern
                 }
             }
         }
+
 
         private void OnDrawGizmosSelected()
         {

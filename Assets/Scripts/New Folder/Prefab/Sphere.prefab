@@ -337,6 +337,9 @@ MonoBehaviour:
   value: 
   textMeshPro: {fileID: 7419033793983023534}
   rotationSpeed: 50
+  level1Material: {fileID: 2100000, guid: 753d12e7244083a47ad529ab3743a4d8, type: 2}
+  level2Material: {fileID: 2100000, guid: b0fc213a20c699d4b815814ca4f180e6, type: 2}
+  level3Material: {fileID: 2100000, guid: a585cdc8f3fb3894686e7f7ccb3eb633, type: 2}
 --- !u!65 &-2999834347689567288
 BoxCollider:
   m_ObjectHideFlags: 0

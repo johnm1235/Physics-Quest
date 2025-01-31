@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175c9e050021be347aac078b4667ab5e, type: 3}
   m_Name: Question 1
   m_EditorClassIdentifier: 
-  question: "\xBFCu\xE1l es la velocidad de un objeto que recorre 20 m en 4 s?"
-  formula: v = d / t
+  question: 
+  formula: "v = d / \u0394t"
   components:
   - v
   - =
   - d
   - /
-  - t
+  - "\u0394t"
   correctFormula: v=20/4
+  level: 0

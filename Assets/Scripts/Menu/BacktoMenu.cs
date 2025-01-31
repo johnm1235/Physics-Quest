@@ -12,4 +12,6 @@ public class BacktoMenu : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
         GameManager.Instance.currentSection = 0;
     }
+
+
 }

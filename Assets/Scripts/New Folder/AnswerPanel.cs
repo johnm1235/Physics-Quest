@@ -19,6 +19,7 @@ public class AnswerPanel : MonoBehaviour
         string correctAnswer = questionManager.CurrentQuestion.correctFormula.Replace(" ", ""); // También elimina espacios en la respuesta correcta
 
 
+
         if (playerAnswer == correctAnswer)
         {
             Debug.Log("Respuesta correcta.");

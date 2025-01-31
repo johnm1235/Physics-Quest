@@ -9,17 +9,20 @@ public class FormulaSpawner : MonoBehaviour
     public GameObject formulaPrefab;
     public Transform[] spawnPoints;
 
+    public Transform[] spawnPointsLevel2;
+    public Transform[] spawnPointsLevel3;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
 
-    public void SpawnComponents(string[] components)
+    public void SpawnComponents(string[] components, int level)
     {
-        List<Transform> availableSpawnPoints = new List<Transform>(spawnPoints);
+        List<Transform> availableSpawnPoints = GetSpawnPointsForLevel(level);
 
-        foreach (Transform spawnPoint in spawnPoints)
+        foreach (Transform spawnPoint in availableSpawnPoints)
         {
             // Limpia los objetos anteriores
             foreach (Transform child in spawnPoint)
@@ -42,6 +45,22 @@ public class FormulaSpawner : MonoBehaviour
 
             GameObject spawned = Instantiate(formulaPrefab, randomPoint.position, Quaternion.identity);
             spawned.GetComponent<FormulaComponent>().value = component;
+        }
+    }
+
+    private List<Transform> GetSpawnPointsForLevel(int level)
+    {
+        switch (level)
+        {
+            case 0:
+                return new List<Transform>(spawnPoints);
+            case 1:
+                return new List<Transform>(spawnPointsLevel2);
+            case 3:
+                return new List<Transform>(spawnPointsLevel3);
+            default:
+                Debug.LogWarning("Nivel no válido, usando puntos de spawn del nivel 1 por defecto.");
+                return new List<Transform>(spawnPoints);
         }
     }
 

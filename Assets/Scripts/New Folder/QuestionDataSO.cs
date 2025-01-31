@@ -13,4 +13,6 @@ public class QuestionDataSO : ScriptableObject
     public string[] components; // Letras y operadores necesarios para completar la fórmula
 
     public string correctFormula; // Fórmula completa con valores reemplazados (ej. "v = 20 / 4")
+
+    public int level;
 }

@@ -1,142 +1,143 @@
-// Usando las bibliotecas necesarias
-using Photon.Pun;
+
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-// Definición de la clase GameManager que hereda de MonoBehaviour
 public class GameManager : MonoBehaviour
 {
-    // Propiedad estática para la instancia del GameManager
     public static GameManager Instance { get; private set; }
 
-    // Variables públicas y privadas
+    [Header("Player & Sections")]
     public GameObject player;
     public Transform[] sectionStartPositions;
-    public int currentSection = 0;
+    public Transform[] spawnPoints;
+
+    [Header("Camera")]
     [SerializeField] private Camera mainCamera;
 
+    public int CurrentLevel { get; private set; } = 0;
+    public int currentSection = 0;
 
-    public Transform[] spawnPoints; // Lugares donde aparecen los jugadores
 
-    // Método Awake que se llama al inicializar el script
+
+
     private void Awake()
     {
-        // Singleton pattern para asegurar que solo haya una instancia de GameManager
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // No destruir el objeto al cargar una nueva escena
-        }
-        else
-        {
-            Destroy(gameObject); // Destruir el objeto si ya existe una instancia
-        }
-
-        // Suscribirse al evento de carga de escena
+        HandleSingleton();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    // Método OnDestroy que se llama al destruir el script
     private void OnDestroy()
     {
-        // Desuscribirse del evento de carga de escena
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Método que se llama cuando se carga una nueva escena
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void HandleSingleton()
     {
-        // Asignar el jugador y las cámaras si no están asignados
-        if (player == null) player = GameObject.FindWithTag("Player");
-        if (mainCamera == null) mainCamera = Camera.main;
-
-        // Reasignar las posiciones de inicio de las secciones
-        sectionStartPositions = new Transform[1];
-        sectionStartPositions[0] = GameObject.FindWithTag("Pos1").transform;
-
-    }
-
-    // Método Start que se llama al iniciar el script
-    public void Start()
-    {
-        BlockCursor(); // Bloquear el 
-    }
-
-    // Método Update que se llama una vez por frame
-    private void Update()
-    {
-        // Reiniciar la sección actual si se presiona la tecla R
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Instance == null)
         {
-            //  RestartSection();
-        }
-    }
-
-    // Método para reiniciar la sección actual
-    public void RestartSection()
-    {
-        mainCamera.enabled = true;
-        if (player != null && sectionStartPositions != null && currentSection < sectionStartPositions.Length)
-        {
-            Debug.Log("Restarting section " + currentSection);
-
-            CharacterController charController = player.GetComponent<CharacterController>();
-            if (charController != null)
-            {
-                charController.enabled = false;
-            }
-
-            player.transform.position = sectionStartPositions[currentSection].position;
-
-            if (charController != null)
-            {
-                charController.enabled = true;
-            }
-
-            Time.timeScale = 1f;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogError("Player or section start position is not assigned, or current section index is out of range.");
+            Destroy(gameObject);
         }
     }
 
-    // Método para mostrar el mensaje de derrota
-    public void ShowDefeatMessage()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Time.timeScale = 0f; // Pausar el juego
+        AssignPlayerAndCamera();
+        AssignSectionPositions();
     }
 
-    // Método para bloquear el cursor
-    public void BlockCursor()
+    private void AssignPlayerAndCamera()
+    {
+        if (player == null) player = GameObject.FindWithTag("Player");
+        if (mainCamera == null) mainCamera = Camera.main;
+    }
+
+    private void AssignSectionPositions()
+    {
+        sectionStartPositions = new Transform[2];
+        sectionStartPositions[0] = GameObject.FindWithTag("Pos1").transform;
+        sectionStartPositions[1] = GameObject.FindWithTag("Pos2").transform;
+
+        SetLevel(currentSection + 1 );
+    }
+
+    private void Start()
+    {
+        LockCursor();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+          //  RestartSection();
+        }
+    }
+
+    public void RestartSection()
+    {
+        if (!ValidateRestartConditions()) return;
+
+        Debug.Log($"Restarting section {currentSection}");
+        ResetPlayerPosition(sectionStartPositions[currentSection].position);
+        Time.timeScale = 1f;
+
+        SetLevel(currentSection + 1);
+    }
+
+    private bool ValidateRestartConditions()
+    {
+        if (player == null || sectionStartPositions == null || currentSection >= sectionStartPositions.Length)
+        {
+            Debug.LogError("Player or section start position is not assigned, or current section index is out of range.");
+            return false;
+        }
+        return true;
+    }
+
+    private void ResetPlayerPosition(Vector3 position)
+    {
+        CharacterController charController = player.GetComponent<CharacterController>();
+
+        if (charController != null) charController.enabled = false;
+        player.transform.position = position;
+        if (charController != null) charController.enabled = true;
+    }
+
+    public void ShowDefeatMessage()
+    {
+        PauseGame();
+    }
+
+    public void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    // Método para desbloquear el cursor
     public void UnlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    // Método para pausar el juego
-    public void Pause()
+    public void PauseGame()
     {
-        Time.timeScale = 0f;
+       // Time.timeScale = 0f;
     }
 
-    // Método para reanudar el juego
-    public void Resume()
+    public void ResumeGame()
     {
-        Time.timeScale = 1f;
+     //   Time.timeScale = 1f;
     }
 
-    // Método para ir al menú principal
     public void GoToMenu()
     {
         if (PhotonNetwork.IsConnected)
@@ -147,36 +148,36 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    // Método para terminar el juego
     public void EndGame()
     {
         SceneManager.LoadScene(0);
         ResetGame();
     }
 
-    // Método para reiniciar el juego
     private void ResetGame()
     {
         Time.timeScale = 1f;
         currentSection = 0;
-        if (player != null && sectionStartPositions != null && currentSection < sectionStartPositions.Length)
-        {
-            CharacterController charController = player.GetComponent<CharacterController>();
-            if (charController != null)
-            {
-                charController.enabled = false;
-            }
-
-            player.transform.position = sectionStartPositions[currentSection].position;
-
-            if (charController != null)
-            {
-                charController.enabled = true;
-            }
-        }
-
+        ResetPlayerPosition(sectionStartPositions[currentSection].position);
     }
 
+    public void SetLevel(int level)
+    {
+        CurrentLevel = level;
+    }
 
+    // Dentro de la clase GameManager
+    public void LoadNextLevel()
+    {
+        currentSection++;
+        if (currentSection >= sectionStartPositions.Length)
+        {
+            Debug.Log("¡Has completado todas las secciones!");
+            return;
+        }
+
+        SetLevel(currentSection + 1);
+        RestartSection();
+    }
 
 }

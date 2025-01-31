@@ -21,14 +21,14 @@ public class MenuPause : MonoBehaviour
             isPaused = !isPaused;
             if (isPaused)
             {
-                GameManager.Instance.Pause();
+                GameManager.Instance.PauseGame();
                 GameManager.Instance.UnlockCursor();
                 pauseMenu.SetActive(true);
             }
             else
             {
-                GameManager.Instance.Resume();
-                GameManager.Instance.BlockCursor();
+                GameManager.Instance.ResumeGame();
+                GameManager.Instance.LockCursor();
                 pauseMenu.SetActive(false);
             }
         }
