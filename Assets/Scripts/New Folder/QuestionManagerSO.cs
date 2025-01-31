@@ -1,3 +1,4 @@
+using StatePattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,21 @@ public class QuestionManagerSO : MonoBehaviour
     private int currentQuestionIndex = 0;
     public int desiredLevel;
 
-    public QuestionDataSO CurrentQuestion => questions[currentQuestionIndex];
+    [SerializeField] private UIManager uiManager; // Referencia directa a UIManager
 
     private void Start()
     {
+        // Validamos que uiManager esté asignado
+        if (uiManager == null)
+        {
+            uiManager = GetComponent<UIManager>();
+            if (uiManager == null)
+            {
+                Debug.LogError("UIManager no está asignado en QuestionManagerSO.");
+                return;
+            }
+        }
+
         LoadCurrentQuestion();
     }
 
@@ -31,7 +43,7 @@ public class QuestionManagerSO : MonoBehaviour
     public void LoadCurrentQuestion()
     {
         // Limpia la fórmula anterior antes de inicializar una nueva
-        UIManager.Instance.ResetFormula();
+        uiManager.ResetFormula();
 
         // Busca la siguiente pregunta que coincida con el nivel deseado
         QuestionDataSO nextQuestion = null;
@@ -54,14 +66,22 @@ public class QuestionManagerSO : MonoBehaviour
         }
 
         // Configura la nueva pregunta y fórmula
-        UIManager.Instance.ShowQuestion(nextQuestion.question);
+        uiManager.ShowQuestion(nextQuestion.question);
 
         // Preprocesa y divide la fórmula en componentes individuales
         string[] separatedFormula = SeparateFormula(nextQuestion.formula);
-        UIManager.Instance.InitializeFormula(separatedFormula);
+        uiManager.InitializeFormula(separatedFormula);
 
         // Spawnea los componentes necesarios
-        FormulaSpawner.Instance.SpawnComponents(nextQuestion.components, desiredLevel);
+        FormulaSpawner formulaSpawner = FindObjectOfType<FormulaSpawner>();
+        if (formulaSpawner != null)
+        {
+            formulaSpawner.SpawnComponents(nextQuestion.components, desiredLevel);
+        }
+        else
+        {
+            Debug.LogError("No se encontró un FormulaSpawner en la escena.");
+        }
     }
 
     private string[] SeparateFormula(string formula)
@@ -105,8 +125,4 @@ public class QuestionManagerSO : MonoBehaviour
 
         return components.ToArray();
     }
-
-
-
-
 }

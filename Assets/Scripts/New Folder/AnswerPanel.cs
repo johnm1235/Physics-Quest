@@ -14,7 +14,7 @@ public class AnswerPanel : MonoBehaviour
     }
 
     public void CheckAnswer()
-    {
+    {/*
         string playerAnswer = inputField.text.Replace(" ", ""); // Elimina espacios adicionales del texto del jugador
         string correctAnswer = questionManager.CurrentQuestion.correctFormula.Replace(" ", ""); // También elimina espacios en la respuesta correcta
 
@@ -31,7 +31,7 @@ public class AnswerPanel : MonoBehaviour
         else
         {
             Debug.Log("Respuesta incorrecta.");
-        }
+        }*/
     }
 
 }

@@ -260,7 +260,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6068786}
   - component: {fileID: 6068787}
-  - component: {fileID: 6068788}
   m_Layer: 0
   m_Name: Nivel 1
   m_TagString: Untagged
@@ -302,26 +301,6 @@ MonoBehaviour:
   itemPickupSFX: {fileID: 0}
   energyChargeSFX: {fileID: 0}
   speedArrowSFX: {fileID: 0}
---- !u!114 &6068788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6068785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8949df919e139f4db5c6d96a12ddd1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  questions:
-  - {fileID: 11400000, guid: 93f41dec6a9128941881133ee90296ea, type: 2}
-  - {fileID: 11400000, guid: 834dd89ce6583dc469e03d9c335f276c, type: 2}
-  - {fileID: 11400000, guid: eeb3dfb256008e345a5d7688f7ff9171, type: 2}
-  - {fileID: 11400000, guid: a946e31d55424ee4fa8f3bfd07886eb5, type: 2}
-  - {fileID: 11400000, guid: 6adf2b4c382d1e34c861e71ba02c475e, type: 2}
-  - {fileID: 11400000, guid: aa5ee696321fecc45998d7f24ef87adb, type: 2}
-  desiredLevel: 0
 --- !u!1 &6450283 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 629454199988001715, guid: d9287f9659aec06429d20ac63df23a95, type: 3}
@@ -7227,7 +7206,8 @@ MonoBehaviour:
   - 5m/s
   - 20m/s
   specialAnswer: 
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
+  uiManager: {fileID: 1274637999}
 --- !u!65 &219805212
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33397,7 +33377,8 @@ MonoBehaviour:
   correctAnswers:
   - 6km/h
   specialAnswer: 6km/h
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
+  uiManager: {fileID: 1274637999}
 --- !u!65 &1099006145
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36449,7 +36430,8 @@ MonoBehaviour:
   correctAnswers:
   - 6km/h
   specialAnswer: 6km/h
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
+  uiManager: {fileID: 1274637999}
 --- !u!65 &1187764503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38561,7 +38543,8 @@ MonoBehaviour:
   correctAnswers:
   - 6km/h
   specialAnswer: 6km/h
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
+  uiManager: {fileID: 1274637999}
 --- !u!65 &1251056975
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39357,6 +39340,7 @@ GameObject:
   - component: {fileID: 1274637999}
   - component: {fileID: 1274638004}
   - component: {fileID: 1274638005}
+  - component: {fileID: 1274638006}
   m_Layer: 5
   m_Name: CanvasUIManager
   m_TagString: Untagged
@@ -39385,7 +39369,7 @@ MonoBehaviour:
   - {fileID: 1326664706}
   formulaCompletePanel: {fileID: 1522288804}
   adventagePanel: {fileID: 324354649}
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
   panelQuestions: {fileID: 1552763165}
 --- !u!114 &1274638000
 MonoBehaviour:
@@ -39502,6 +39486,27 @@ MonoBehaviour:
   advantageTexts:
   - Gira un turno extra
   - Avanza 3 casillas
+--- !u!114 &1274638006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274637998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8949df919e139f4db5c6d96a12ddd1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questions:
+  - {fileID: 11400000, guid: 93f41dec6a9128941881133ee90296ea, type: 2}
+  - {fileID: 11400000, guid: 834dd89ce6583dc469e03d9c335f276c, type: 2}
+  - {fileID: 11400000, guid: eeb3dfb256008e345a5d7688f7ff9171, type: 2}
+  - {fileID: 11400000, guid: a946e31d55424ee4fa8f3bfd07886eb5, type: 2}
+  - {fileID: 11400000, guid: 6adf2b4c382d1e34c861e71ba02c475e, type: 2}
+  - {fileID: 11400000, guid: aa5ee696321fecc45998d7f24ef87adb, type: 2}
+  desiredLevel: 0
+  uiManager: {fileID: 1274637999}
 --- !u!65 &1274794010
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48239,7 +48244,8 @@ MonoBehaviour:
   - 5m/s
   - 20m/s
   specialAnswer: 
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
+  uiManager: {fileID: 1274637999}
 --- !u!1 &1552946158 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -14080638278497529, guid: d9287f9659aec06429d20ac63df23a95, type: 3}
@@ -60302,7 +60308,8 @@ MonoBehaviour:
   - 5m/s
   - 20m/s
   specialAnswer: 
-  questionManager: {fileID: 6068788}
+  questionManager: {fileID: 1274638006}
+  uiManager: {fileID: 1274637999}
 --- !u!65 &1911981189
 BoxCollider:
   m_ObjectHideFlags: 0

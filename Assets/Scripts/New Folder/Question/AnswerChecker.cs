@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class AnswerChecker : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class AnswerChecker : MonoBehaviour
 
     public QuestionManagerSO questionManager;
 
+    public UIManager uiManager;
+
     private void Start()
     {
         // Inicialmente, desactivar el panel
@@ -28,15 +31,17 @@ public class AnswerChecker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        PhotonView photonView = other.GetComponent<PhotonView>();
         // Detectar si el jugador entra en el trigger
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && photonView != null && photonView.IsMine)
         {
             GameManager.Instance.UnlockCursor(); // Desbloquear el cursor
-            Time.timeScale = 0; // Pausar el juego
+          //  Time.timeScale = 0; // Pausar el juego
             answerPanel.SetActive(true); // Activar el panel
             answerInput.text = "";      // Limpiar el InputField
             answerInput.image.color = Color.white; // Resetear el color del InputField
         }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -76,7 +81,7 @@ public class AnswerChecker : MonoBehaviour
             if (playerAnswer == specialAnswer.ToLower())
             {
                 GameManager.Instance.LoadNextLevel(); // Cargar el siguiente nivel
-                UIManager.Instance.RequestResetFormulaList(); 
+                uiManager.RequestResetFormulaList();
                 questionManager.NextQuestion();      // Cargar la siguiente pregunta
             }
         }

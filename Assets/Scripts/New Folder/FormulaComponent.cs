@@ -14,11 +14,21 @@ public class FormulaComponent : MonoBehaviour
     public Material level3Material;
 
     private Renderer objectRenderer;
+    private UIManager uiManager;
 
     private void Start()
     {
         textMeshPro.text = value;
         objectRenderer = GetComponent<Renderer>();
+
+        // Buscar y asignar el UIManager
+        uiManager = FindObjectOfType<UIManager>();
+        if (uiManager == null)
+        {
+            Debug.LogError("No se encontró UIManager en la escena.");
+            return;
+        }
+
         UpdateMaterial();
     }
 
@@ -29,10 +39,22 @@ public class FormulaComponent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
+        PhotonView photonView = other.GetComponent<PhotonView>();
+
+        // Verificar si el objeto con el que colisiona es el jugador y es de su propiedad
+        if (other.CompareTag("Player") && photonView != null && photonView.IsMine)
         {
-            UIManager.Instance.AddToFormula(value);
-            Destroy(gameObject);
+            uiManager.AddToFormula(value);
+
+            // Destruir el objeto en la red para todos los jugadores, asegurándonos de que el cliente sea el propietario o el MasterClient
+            if (photonView.IsMine || PhotonNetwork.IsMasterClient)
+            {
+                Destroy(gameObject); // Destruir el objeto de forma correcta en la red
+            }
+            else
+            {
+                Debug.LogWarning("No tienes permisos para destruir este objeto.");
+            }
         }
     }
 
