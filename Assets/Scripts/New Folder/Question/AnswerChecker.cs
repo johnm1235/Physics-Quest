@@ -20,6 +20,9 @@ public class AnswerChecker : MonoBehaviour
 
     public UIManager uiManager;
 
+    [Header("Audio")]
+    public AudioClip WrongSFX;
+
     private void Start()
     {
         // Inicialmente, desactivar el panel
@@ -87,6 +90,7 @@ public class AnswerChecker : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlaySFX(WrongSFX);
             answerInput.image.color = Color.red; // Incorrecto
         }
 

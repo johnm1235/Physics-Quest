@@ -9,7 +9,6 @@ public class GameOverTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
             GameManager.Instance.RestartSection();
         }
     }

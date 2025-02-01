@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class BacktoMenu : MonoBehaviour
 {
+    [SerializeField] private AudioClip itemPickupSFX;
     public void BackToMenu()
     {
-       // GameManager.Instance.StartNewGame();
+        AudioManager.Instance.PlaySFX(itemPickupSFX);
+        // GameManager.Instance.StartNewGame();
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
         GameManager.Instance.currentSection = 0;

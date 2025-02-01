@@ -297,8 +297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1001ffd762252144cb972d4412100bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelMusic: {fileID: 0}
-  itemPickupSFX: {fileID: 0}
+  levelMusic: {fileID: 8300000, guid: 7fed0ebb4a86d3d40a1f44e6a4db6aac, type: 3}
+  itemPickupSFX: {fileID: 8300000, guid: ea1ff985598850544bd001c54614b10c, type: 3}
   energyChargeSFX: {fileID: 0}
   speedArrowSFX: {fileID: 0}
 --- !u!1 &6450283 stripped
@@ -7208,6 +7208,7 @@ MonoBehaviour:
   specialAnswer: 
   questionManager: {fileID: 1274638006}
   uiManager: {fileID: 1274637999}
+  WrongSFX: {fileID: 8300000, guid: 07333468d140ea345a75742f397bd5e5, type: 3}
 --- !u!65 &219805212
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25204,6 +25205,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7228354910341522885, guid: c476140e1ba69fc45ab134815ac94347, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7726341678028614137, guid: c476140e1ba69fc45ab134815ac94347, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0e1e84e7f2cbc64f8307c9a80a676cc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33379,6 +33388,7 @@ MonoBehaviour:
   specialAnswer: 6km/h
   questionManager: {fileID: 1274638006}
   uiManager: {fileID: 1274637999}
+  WrongSFX: {fileID: 8300000, guid: 07333468d140ea345a75742f397bd5e5, type: 3}
 --- !u!65 &1099006145
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36432,6 +36442,7 @@ MonoBehaviour:
   specialAnswer: 6km/h
   questionManager: {fileID: 1274638006}
   uiManager: {fileID: 1274637999}
+  WrongSFX: {fileID: 8300000, guid: 07333468d140ea345a75742f397bd5e5, type: 3}
 --- !u!65 &1187764503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38545,6 +38556,7 @@ MonoBehaviour:
   specialAnswer: 6km/h
   questionManager: {fileID: 1274638006}
   uiManager: {fileID: 1274637999}
+  WrongSFX: {fileID: 8300000, guid: 07333468d140ea345a75742f397bd5e5, type: 3}
 --- !u!65 &1251056975
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48246,6 +48258,7 @@ MonoBehaviour:
   specialAnswer: 
   questionManager: {fileID: 1274638006}
   uiManager: {fileID: 1274637999}
+  WrongSFX: {fileID: 8300000, guid: 07333468d140ea345a75742f397bd5e5, type: 3}
 --- !u!1 &1552946158 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -14080638278497529, guid: d9287f9659aec06429d20ac63df23a95, type: 3}
@@ -50504,6 +50517,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 0}
   mainCamera: {fileID: 963194227}
+  RestartSFX: {fileID: 8300000, guid: 17c97f4811c1fc34abc1d8f85a2cb5a7, type: 3}
   currentSection: 0
 --- !u!1 &1628328077 stripped
 GameObject:
@@ -53301,6 +53315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1325a046a6593439ba0fc53e4ed2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPickupSFX: {fileID: 8300000, guid: 4e361b3cb15842944947f6f6d3eb14d0, type: 3}
 --- !u!1 &1715081781
 GameObject:
   m_ObjectHideFlags: 0
@@ -57949,6 +57964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1714611568}
+  PausedSFX: {fileID: 8300000, guid: 4e361b3cb15842944947f6f6d3eb14d0, type: 3}
   isPaused: 0
 --- !u!1 &1837802865 stripped
 GameObject:
@@ -60310,6 +60326,7 @@ MonoBehaviour:
   specialAnswer: 
   questionManager: {fileID: 1274638006}
   uiManager: {fileID: 1274637999}
+  WrongSFX: {fileID: 8300000, guid: 07333468d140ea345a75742f397bd5e5, type: 3}
 --- !u!65 &1911981189
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Camera mainCamera;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip RestartSFX;
+
     public int CurrentLevel { get; private set; } = 0;
     public int currentSection = 0;
 
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartSection()
     {
+       // AudioManager.Instance.PlaySFX(RestartSFX);
         if (!ValidateRestartConditions()) return;
 
         Debug.Log($"Restarting section {currentSection}");

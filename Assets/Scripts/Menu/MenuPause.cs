@@ -5,6 +5,8 @@ using UnityEngine;
 public class MenuPause : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private AudioClip PausedSFX;
+
 
     public bool isPaused;
 
@@ -24,9 +26,11 @@ public class MenuPause : MonoBehaviour
                 GameManager.Instance.PauseGame();
                 GameManager.Instance.UnlockCursor();
                 pauseMenu.SetActive(true);
+                AudioManager.Instance.PlaySFX(PausedSFX);
             }
             else
             {
+                AudioManager.Instance.PlaySFX(PausedSFX);
                 GameManager.Instance.ResumeGame();
                 GameManager.Instance.LockCursor();
                 pauseMenu.SetActive(false);

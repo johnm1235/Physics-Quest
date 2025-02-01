@@ -50,22 +50,22 @@ namespace StatePattern
             yInput = 0;
             zInput = 0;
 
-            if (Input.GetKey(forward))
+            if (Input.GetKey(forward) || Input.GetKey(KeyCode.UpArrow))
             {
                 zInput++;
             }
 
-            if (Input.GetKey(back))
+            if (Input.GetKey(back) || Input.GetKey(KeyCode.DownArrow))
             {
                 zInput--;
             }
 
-            if (Input.GetKey(left))
+            if (Input.GetKey(left) || Input.GetKey(KeyCode.LeftArrow))
             {
                 xInput--;
             }
 
-            if (Input.GetKey(right))
+            if (Input.GetKey(right) || Input.GetKey(KeyCode.RightArrow))
             {
                 xInput++;
             }

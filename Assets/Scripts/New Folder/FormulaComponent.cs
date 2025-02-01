@@ -16,6 +16,9 @@ public class FormulaComponent : MonoBehaviour
     private Renderer objectRenderer;
     private UIManager uiManager;
 
+    [Header("Audio")]
+    public AudioClip itemSFX;
+
     private void Start()
     {
         textMeshPro.text = value;
@@ -49,6 +52,7 @@ public class FormulaComponent : MonoBehaviour
             // Destruir el objeto en la red para todos los jugadores, asegurándonos de que el cliente sea el propietario o el MasterClient
             if (photonView.IsMine || PhotonNetwork.IsMasterClient)
             {
+                AudioManager.Instance.PlaySFX(itemSFX);
                 Destroy(gameObject); // Destruir el objeto de forma correcta en la red
             }
             else
